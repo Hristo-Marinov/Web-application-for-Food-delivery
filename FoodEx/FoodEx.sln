@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodEx", "FoodEx\FoodEx.csproj", "{6C6108CF-7574-422A-9C99-DBA5AA493745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodEx.Data", "FoodEx.Data\FoodEx.Data.csproj", "{EBD941F4-8645-477D-9304-975B6E7CDA14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C6108CF-7574-422A-9C99-DBA5AA493745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6108CF-7574-422A-9C99-DBA5AA493745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6108CF-7574-422A-9C99-DBA5AA493745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6108CF-7574-422A-9C99-DBA5AA493745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD941F4-8645-477D-9304-975B6E7CDA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD941F4-8645-477D-9304-975B6E7CDA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD941F4-8645-477D-9304-975B6E7CDA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD941F4-8645-477D-9304-975B6E7CDA14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BF94BF2-FA88-4C36-A635-B83A5C08C752}
+	EndGlobalSection
+EndGlobal
