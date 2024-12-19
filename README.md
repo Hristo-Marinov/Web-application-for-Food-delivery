@@ -26,3 +26,13 @@
            UserFavoriteViewModel
            UserViewModel
 ![ViewModelReadMe](https://github.com/user-attachments/assets/e05826cd-3535-461a-a6e2-ed4149134ebd)
+
+## 3. Seeding Profiles
+
+3.1 Profiles
+
+         1 User
+         1 Admin
+         1 DeliveryGuy
+         1 Restaurant
+         3 Foods
