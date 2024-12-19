@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get the connection string from appsettings.json
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
@@ -15,26 +15,24 @@ if (string.IsNullOrEmpty(connectionString))
 
 Console.WriteLine($"Using Connection String: {connectionString}");
 
-// Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, sqlOptions =>
-        sqlOptions.MigrationsAssembly("FoodEx"))); // Specify FoodEx as the migrations assembly
+        sqlOptions.MigrationsAssembly("FoodEx"))); 
 
-// Configure Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
-.AddRoles<IdentityRole>() // Enable roles
-.AddEntityFrameworkStores<ApplicationDbContext>(); // Use ApplicationDbContext for Identity
+.AddRoles<IdentityRole>() 
+.AddEntityFrameworkStores<ApplicationDbContext>(); 
 
-// Add MVC and Razor Pages
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure middleware
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -49,7 +47,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Configure routing
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
