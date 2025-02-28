@@ -36,3 +36,23 @@
          1 DeliveryGuy
          1 Restaurant
          3 Foods
+## 4. Making Controllers
+
+4.1 Controllers
+
+         HomeController
+         FoodController
+         PlaceController
+
+## 5. Making Views
+
+5.1 Views
+
+         Index.cshtml
+         Place.cshtml
+         PlaceDetails.cshtml
+         FoodDetaiils.cshtml
+![Image](https://github.com/user-attachments/assets/b900506f-c253-4689-b4a8-de0dad44edee)
+![Image](https://github.com/user-attachments/assets/7ae8a8e4-a2aa-4463-98fa-7f2a9ed1a109)
+![Image](https://github.com/user-attachments/assets/87035ebb-b739-42fc-a29d-e8cc67577922)
+![Image](https://github.com/user-attachments/assets/128d2e1d-85d2-464c-a565-2b24d5862c73)
