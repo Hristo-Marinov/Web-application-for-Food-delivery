@@ -1,32 +1,34 @@
-﻿using FoodEx.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
+using FoodEx.Entity.Context;
+using System.Linq;
 
 namespace FoodEx.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var restaurants = _context.Restaurants.ToList();
+            return View(restaurants);
         }
 
-        public IActionResult Privacy()
+        public IActionResult TRF()
         {
-            return View();
+            var restaurants = _context.Restaurants.ToList();
+            return View("TRF", restaurants);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Place()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var restaurants = _context.Restaurants.ToList();
+            return View();
         }
     }
 }

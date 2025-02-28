@@ -1,0 +1,36 @@
+﻿@using System.Security.Policy;
+@model IEnumerable<FoodEx.Entity.Restaurant>
+
+@{
+    ViewData["Title"] = "All Restaurants";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h2 class="text-center">All Restaurants</h2>
+        <div class="row">
+            @foreach (var restaurant in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5235/5235253.png" class="card-img-top" alt="@restaurant.Name">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@restaurant.Name</h5>
+                            <p class="card-text">@restaurant.Location</p>
+                            <a href="/Restaurant/Details/@restaurant.RestaurantId" class="btn btn-warning">View Menu</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.Name</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h2 class="text-center">@Model.Name</h2>
+        <p class="text-center">@Model.Description</p>
+        <h4 class="text-center">Price: $@Model.Price</h4>
+        <p class="text-center">Served at: <strong>@Model.RestaurantName</strong></p>
+
+        <div class="text-center mt-4">
+            <a href="#" class="btn btn-primary">Order Now</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+        </div>
+    </div>
+</body>
+</html>

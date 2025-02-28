@@ -48,6 +48,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "restaurant",
+    pattern: "Places/Place",
+    defaults: new { controller = "Place", action = "Place" });
+
+app.MapControllerRoute(
+    name: "foodDetails",
+    pattern: "Food/FoodDetails/{id}",
+    defaults: new { controller = "Food", action = "FoodDetails" });
+
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
