@@ -16,3 +16,112 @@ html {
 body {
   margin-bottom: 60px;
 }
+.auth-container {
+    display: flex;
+    width: 80%;
+    max-width: 900px;
+    margin: 80px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.auth-form {
+    flex: 1;
+    padding: 60px 40px;
+    background-color: white;
+}
+
+.auth-overlay {
+    flex: 1;
+    background: linear-gradient(to right, #7d4f19, #d1a35d);
+    color: white;
+    padding: 60px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .auth-form h2,
+    .auth-overlay h2 {
+        margin-bottom: 20px;
+    }
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+.btn-auth {
+    background-color: #d1a35d;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    transition: background 0.3s ease;
+}
+
+    .btn-auth:hover {
+        background-color: #b88948;
+    }
+
+.btn-auth-outline {
+    background-color: transparent;
+    color: white;
+    padding: 10px 25px;
+    border: 2px solid white;
+    border-radius: 25px;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+    .btn-auth-outline:hover {
+        background-color: rgba(255,255,255,0.1);
+    }
+
+.form-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.restaurant-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .restaurant-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+.img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 230px;
+}
+
+    .img-wrapper img {
+        object-fit: cover;
+        height: 100%;
+    }
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    padding: 15px;
+    transition: opacity 0.3s ease;
+}
+
+.restaurant-name {
+    margin: 0;
+}

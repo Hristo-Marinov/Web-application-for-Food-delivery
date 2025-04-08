@@ -19,7 +19,7 @@ namespace FoodEx.Controllers
             return View(restaurants);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult PlaceDetails(int id)
         {
             var place = _context.Restaurants
                 .Where(r => r.RestaurantId == id)

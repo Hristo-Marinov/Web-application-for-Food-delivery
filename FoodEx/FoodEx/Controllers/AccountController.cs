@@ -23,14 +23,19 @@ namespace FoodEx.Controllers
             _roleManager = roleManager;
         }
 
-
-        public IActionResult Login() => View();
+        public IActionResult Login()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
@@ -42,7 +47,7 @@ namespace FoodEx.Controllers
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home"); // Redirect to Home after login
+                return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -53,12 +58,7 @@ namespace FoodEx.Controllers
         {
             var model = new RegisterViewModel
             {
-                AvailableRoles = new List<SelectListItem>
-                {
-                    new SelectListItem("User", "User"),
-                    new SelectListItem("Restaurant", "Restaurant"),
-                    new SelectListItem("DeliveryGuy", "DeliveryGuy")
-                }
+                AvailableRoles = GetRoleList()
             };
 
             return View(model);
@@ -84,7 +84,6 @@ namespace FoodEx.Controllers
 
             if (result.Succeeded)
             {
-                // Ensure role exists before assignment
                 var roleName = model.SelectedRole;
 
                 if (!await _roleManager.RoleExistsAsync(roleName))
@@ -98,9 +97,7 @@ namespace FoodEx.Controllers
                     }
                 }
 
-                // Assign user to role
                 await _userManager.AddToRoleAsync(user, roleName);
-
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
@@ -124,14 +121,12 @@ namespace FoodEx.Controllers
             };
         }
 
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home"); 
+            return RedirectToAction("Index", "Home");
         }
     }
 }

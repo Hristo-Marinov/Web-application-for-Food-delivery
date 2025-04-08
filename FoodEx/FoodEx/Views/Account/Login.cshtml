@@ -1,19 +1,33 @@
 ﻿@model FoodEx.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<h2>Login</h2>
+<link rel="stylesheet" href="~/css/auth.css" />
 
-<form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" autocomplete="email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+<div class="auth-container">
+    <div class="auth-form login">
+        <h2>Sign in</h2>
+
+        @await Html.PartialAsync("_ValidationSummary")
+
+        <form asp-action="Login" method="post">
+            <div class="input-group">
+                <input asp-for="Email" type="email" placeholder="Email" />
+            </div>
+            <div class="input-group">
+                <input asp-for="Password" type="password" placeholder="Password" />
+            </div>
+            <div class="form-footer">
+                <a href="#">Forgot your password?</a>
+                <button type="submit" class="btn-auth">Sign In</button>
+            </div>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" autocomplete="current-password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+    <div class="auth-overlay">
+        <h2>Hello, Friend!</h2>
+        <p>Enter your personal details and start your journey with us</p>
+        <a class="btn-auth-outline" asp-action="Register">Sign Up</a>
     </div>
-
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</div>
