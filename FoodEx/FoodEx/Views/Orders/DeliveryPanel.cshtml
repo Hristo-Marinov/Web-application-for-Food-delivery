@@ -1,0 +1,40 @@
+﻿@model IEnumerable<FoodEx.Entity.Order>
+
+@{
+    ViewData["Title"] = "Delivery Panel";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Update Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.User?.UserName</td>
+                <td>@order.DeliveryAddress?.Street</td>
+                <td>@order.Status</td>
+                <td>
+                    <form asp-action="UpdateOrderStatusByDelivery" method="post">
+                        <input type="hidden" name="orderId" value="@order.OrderId" />
+                        <select name="status" class="form-select form-select-sm">
+                            <option value="Delivering">Delivering</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-success mt-1">Update</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

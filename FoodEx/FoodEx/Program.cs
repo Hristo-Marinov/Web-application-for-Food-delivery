@@ -73,7 +73,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Custom routes
 app.MapControllerRoute(
     name: "restaurant",
     pattern: "Places/Place",
@@ -90,10 +89,54 @@ app.MapControllerRoute(
     defaults: new { controller = "Account" });
 
 app.MapControllerRoute(
+    name: "cart",
+    pattern: "Cart/{action=Index}/{id?}",
+    defaults: new { controller = "Cart" });
+
+app.MapControllerRoute(
+    name: "orders",
+    pattern: "Orders/{action=Index}/{id?}",
+    defaults: new { controller = "Orders" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "orders_user",
+    pattern: "orders/user/{action=Index}/{id?}",
+    defaults: new { controller = "Orders", action = "Index" });
+
+app.MapControllerRoute(
+    name: "orders_restaurant",
+    pattern: "orders/restaurant/{action=RestaurantPanel}/{id?}",
+    defaults: new { controller = "Orders", action = "RestaurantPanel" });
+
+app.MapControllerRoute(
+    name: "orders_delivery",
+    pattern: "orders/delivery/{action=DeliveryPanel}/{id?}",
+    defaults: new { controller = "Orders", action = "DeliveryPanel" });
+
+app.MapControllerRoute(
+    name: "restaurant_myfoods",
+    pattern: "Restaurant/MyFoods",
+    defaults: new { controller = "Restaurant", action = "MyFoods" });
+
+app.MapControllerRoute(
+    name: "restaurantCreate", 
+    pattern: "Restaurant/Create", 
+    defaults: new { controller = "Restaurant", action = "Create" });
+
+app.MapControllerRoute(
+    name: "restaurantAddFood", 
+    pattern: "Restaurant/AddFood", 
+    defaults: new { controller = "Restaurant", action = "AddFood" });
+
+app.MapControllerRoute(
+    name: "restaurantDeleteFood", 
+    pattern: "Restaurant/DeleteFood/{id?}", 
+    defaults: new { controller = "Restaurant", action = "DeleteFood" });
+
 app.MapRazorPages();
 
-// Run the application
 app.Run();

@@ -1,0 +1,60 @@
+﻿@model FoodEx.Entity.Restaurant
+
+@{
+    ViewData["Title"] = "My Restaurant";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model == null)
+{
+    <p>You don't have a restaurant yet.</p>
+    <a asp-action="CreateRestaurant" class="btn btn-primary">Create Restaurant</a>
+}
+else
+{
+    <div class="mb-3">
+        <h4>@Model.Name</h4>
+        <p><strong>Location:</strong> @Model.Location</p>
+        <p><strong>Phone:</strong> @Model.Phone</p>
+    </div>
+
+    <h4>Menu</h4>
+    <a asp-action="AddFood" class="btn btn-success mb-2">Add Food</a>
+
+    @if (Model.Foods != null && Model.Foods.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var food in Model.Foods)
+                {
+                    <tr>
+                        <td>@food.Name</td>
+                        <td>@food.Description</td>
+                        <td>@food.Price.ToString("C")</td>
+                        <td>@food.Category</td>
+                        <td>
+                            <form asp-action="DeleteFood" method="post">
+                                <input type="hidden" name="id" value="@food.FoodId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No food items yet.</p>
+    }
+}

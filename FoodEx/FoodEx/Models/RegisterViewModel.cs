@@ -1,20 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace FoodEx.Models
 {
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+        [Required, DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [DataType(DataType.Password), Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string SelectedRole { get; set; }
+
+        public List<SelectListItem> AvailableRoles { get; set; } = new List<SelectListItem>
+        {
+           new SelectListItem("User", "User"),
+           new SelectListItem("Restaurant", "Restaurant"),
+            new SelectListItem("DeliveryGuy", "DeliveryGuy")
+        };
+
+
     }
 }

@@ -4,6 +4,7 @@ using FoodEx.Entity.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodEx.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407071413_OrderItem")]
+    partial class OrderItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,15 +133,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "admin-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "48256583-f6c9-4806-81e6-36b24d79643e",
+                            ConcurrencyStamp = "4253af1e-c064-4b45-9f3a-747a0ae2b153",
                             Email = "admin@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODEX.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ1i4n4OVbVkOYqDApEY+s6BQMOpMrwFC6tfMLfMjgRt1ZoUEXMTV/uE2rTkTo06Gw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELUz/sTLdJ0PYlTF8t+0P1sqWOHnZCp/WRlXeyuXaDBByiMEKJnObO5v9OJOdYTicw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2f61adbb-b987-4b9a-9273-500559f6e689",
+                            SecurityStamp = "a602e02c-673e-4275-a4f0-d0939242b5a2",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -147,15 +149,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "regular-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cf0d4ac6-a26f-4922-bb04-064e3f3fa9fd",
+                            ConcurrencyStamp = "64397ae8-d83a-4999-a056-271c9d79052e",
                             Email = "user@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@FOODEX.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKdrSj1X3BS6LL7/yIMVd3cLmmX1QH11cVjjpr8jt9nLsVSWiol3ONJxluqSaqbWtg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELlLCPlvutFyapBKRSjryNSJpcFs3KPsHP7IcT3JvuqpY2dADo/rSWnPBkeyolR3rQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "27a1382a-40cd-4a5b-bf75-2b9e3cc69214",
+                            SecurityStamp = "56d75622-668a-42f1-a44f-6df9ef68df27",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         },
@@ -163,15 +165,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "deliveryguy-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ef1cbbe-7d26-4c29-bcf1-cc9e3b943ac4",
+                            ConcurrencyStamp = "7b5829bb-67cd-4256-9442-5cb37a9cb7ac",
                             Email = "deliveryguy@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DELIVERYGUY@FOODEX.COM",
                             NormalizedUserName = "DELIVERYGUY",
-                            PasswordHash = "AQAAAAEAACcQAAAAED2oJjVIk1qGGU9oxnGvfdpZvQzVOLKksn4Fl4ZyRq6xXh6GDDd5t1z6WBCBvTL/bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPkn31t+NQ4SpYUGUWDz65tw8c0A27j0PpgJ6qrbiWOl/vkRypFSUr+OXzeXwuyY6Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a0e4ed2c-0fc2-4ef9-bc49-3a0fa31bee07",
+                            SecurityStamp = "eedba701-0cd7-4b11-86ea-236eddbbe93c",
                             TwoFactorEnabled = false,
                             UserName = "deliveryguy"
                         },
@@ -179,15 +181,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "restaurant-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e522e7a3-6323-480d-b69c-f00f7fbb3b0e",
+                            ConcurrencyStamp = "a22fbfa5-3dbd-4843-a882-20b5373a2187",
                             Email = "restaurantowner@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                             NormalizedUserName = "RESTAURANTOWNER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKR6KOACg0dHJKP7OtmJv+TC7MlTPssTg22OPEDgrqYUc0EG8Y8jhNVQGlchaFcbyQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFJL1q/akIAHybLP9MmvhVt0vHD8voVLsxDcB/OiiYkNJJJSrNZ56sZHk2+22IyPGA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ff599bb2-05d7-4107-925f-04d1c4b37a6e",
+                            SecurityStamp = "09571a30-f8ff-4348-8d39-dbb7dde41797",
                             TwoFactorEnabled = false,
                             UserName = "restaurantowner"
                         });
@@ -263,7 +265,6 @@ namespace FoodEx.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RestaurantId")
@@ -332,7 +333,6 @@ namespace FoodEx.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
@@ -369,7 +369,6 @@ namespace FoodEx.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderItemId");
@@ -507,28 +506,28 @@ namespace FoodEx.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "921f692e-6c08-49ee-954a-2d1447a2222d",
+                            ConcurrencyStamp = "4571f3bf-bb8a-49d1-b29b-4099b4987cde",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "eaed651c-aa2c-48f4-9482-c65138504098",
+                            ConcurrencyStamp = "7cb984ff-04cc-42f7-9b75-b942169450ac",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "6e0fd75b-71df-48ce-90eb-c1fbe8100043",
+                            ConcurrencyStamp = "ce7b3d81-995c-4bec-963c-a7070c830748",
                             Name = "DeliveryGuy",
                             NormalizedName = "DELIVERYGUY"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "061adf55-c931-47f3-a6e8-8508882383d2",
+                            ConcurrencyStamp = "dbe790d6-4dc4-4456-bf85-4366f83f8a4a",
                             Name = "Restaurant",
                             NormalizedName = "RESTAURANT"
                         });

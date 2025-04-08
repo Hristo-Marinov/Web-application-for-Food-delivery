@@ -4,6 +4,7 @@ using FoodEx.Entity.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodEx.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325071611_Cart")]
+    partial class Cart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,15 +133,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "admin-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "48256583-f6c9-4806-81e6-36b24d79643e",
+                            ConcurrencyStamp = "2eeeead3-3d38-44a6-b211-cc4fac773786",
                             Email = "admin@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODEX.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ1i4n4OVbVkOYqDApEY+s6BQMOpMrwFC6tfMLfMjgRt1ZoUEXMTV/uE2rTkTo06Gw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE95yqp+hH6o8ciXwqsG7ekvn/7O7iLayChJN/Jo7jlzHldD0TqUetXjZukkwDilGg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2f61adbb-b987-4b9a-9273-500559f6e689",
+                            SecurityStamp = "9e33922d-3576-436e-afae-6320fcec679d",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -147,15 +149,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "regular-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cf0d4ac6-a26f-4922-bb04-064e3f3fa9fd",
+                            ConcurrencyStamp = "da6c5262-377b-4322-91f6-cd60d9b7f4d2",
                             Email = "user@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@FOODEX.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKdrSj1X3BS6LL7/yIMVd3cLmmX1QH11cVjjpr8jt9nLsVSWiol3ONJxluqSaqbWtg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBGJcjDkAODFXj2JdGxFyEkDdIDK3yKPeuDIRZjf5Sd0O9zykPcNNbN0Z3Pa+WwJLw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "27a1382a-40cd-4a5b-bf75-2b9e3cc69214",
+                            SecurityStamp = "b8c07412-56be-4dd2-ab2a-9f0aa2f2de66",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         },
@@ -163,15 +165,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "deliveryguy-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ef1cbbe-7d26-4c29-bcf1-cc9e3b943ac4",
+                            ConcurrencyStamp = "87d46883-4648-4ff6-83d5-4e5a95d28485",
                             Email = "deliveryguy@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DELIVERYGUY@FOODEX.COM",
                             NormalizedUserName = "DELIVERYGUY",
-                            PasswordHash = "AQAAAAEAACcQAAAAED2oJjVIk1qGGU9oxnGvfdpZvQzVOLKksn4Fl4ZyRq6xXh6GDDd5t1z6WBCBvTL/bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN2xVIWTOMw3HgpNuCtX9RHey3ERh3G7ZGHLmLGGIHyBiiVNBgiyOaDynEw4fm5Fzg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a0e4ed2c-0fc2-4ef9-bc49-3a0fa31bee07",
+                            SecurityStamp = "ab5b5b81-c9c2-40f2-be4f-28dc5a1f2997",
                             TwoFactorEnabled = false,
                             UserName = "deliveryguy"
                         },
@@ -179,15 +181,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "restaurant-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e522e7a3-6323-480d-b69c-f00f7fbb3b0e",
+                            ConcurrencyStamp = "a450f440-9edb-4b31-87f4-751d62c62cc0",
                             Email = "restaurantowner@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                             NormalizedUserName = "RESTAURANTOWNER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKR6KOACg0dHJKP7OtmJv+TC7MlTPssTg22OPEDgrqYUc0EG8Y8jhNVQGlchaFcbyQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIaOBEZr0viAeW80aSJcLszG/VEuQCqCksdJrIuAzzlCXCoym/DTCx146+M1AB5uKg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ff599bb2-05d7-4107-925f-04d1c4b37a6e",
+                            SecurityStamp = "dcd997d2-118f-4b9b-b1ab-cee708badb31",
                             TwoFactorEnabled = false,
                             UserName = "restaurantowner"
                         });
@@ -263,7 +265,6 @@ namespace FoodEx.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RestaurantId")
@@ -328,11 +329,7 @@ namespace FoodEx.Migrations
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("TotalPrice")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
@@ -349,36 +346,6 @@ namespace FoodEx.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("FoodEx.Entity.OrderItem", b =>
-                {
-                    b.Property<int>("OrderItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"), 1L, 1);
-
-                    b.Property<int>("FoodId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("OrderItemId");
-
-                    b.HasIndex("FoodId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("FoodEx.Entity.Rating", b =>
@@ -507,28 +474,28 @@ namespace FoodEx.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "921f692e-6c08-49ee-954a-2d1447a2222d",
+                            ConcurrencyStamp = "1450de47-64d9-4c5d-a7c0-c7d6d8643035",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "eaed651c-aa2c-48f4-9482-c65138504098",
+                            ConcurrencyStamp = "75b74d08-19cb-44b8-b763-6938673800a7",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "6e0fd75b-71df-48ce-90eb-c1fbe8100043",
+                            ConcurrencyStamp = "50fe69ef-9930-498d-b8cf-286136b6010c",
                             Name = "DeliveryGuy",
                             NormalizedName = "DELIVERYGUY"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "061adf55-c931-47f3-a6e8-8508882383d2",
+                            ConcurrencyStamp = "7a20b20f-f426-46c0-801a-9726a6c2d40b",
                             Name = "Restaurant",
                             NormalizedName = "RESTAURANT"
                         });
@@ -753,25 +720,6 @@ namespace FoodEx.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FoodEx.Entity.OrderItem", b =>
-                {
-                    b.HasOne("FoodEx.Entity.Food", "Food")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FoodEx.Entity.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Food");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("FoodEx.Entity.Rating", b =>
                 {
                     b.HasOne("FoodEx.Entity.Food", "Food")
@@ -882,11 +830,6 @@ namespace FoodEx.Migrations
             modelBuilder.Entity("FoodEx.Entity.Cart", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("FoodEx.Entity.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("FoodEx.Entity.Restaurant", b =>
