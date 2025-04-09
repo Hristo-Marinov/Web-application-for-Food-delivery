@@ -20,7 +20,7 @@ namespace FoodEx.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> UserOrders()
         {
             var userId = _userManager.GetUserId(User);
             var orders = await _context.Orders
