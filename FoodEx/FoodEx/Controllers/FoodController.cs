@@ -33,7 +33,8 @@ namespace FoodEx.Controllers
                     Name = f.Name,
                     Description = f.Description,
                     Price = f.Price,
-                    RestaurantName = f.Restaurant.Name
+                    RestaurantName = f.Restaurant.Name,
+                    ImageUrl = f.ImageUrl
                 }).FirstOrDefault();
 
             if (food == null)

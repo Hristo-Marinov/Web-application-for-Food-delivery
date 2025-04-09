@@ -38,7 +38,8 @@ namespace FoodEx.Controllers
                     FoodId = ci.FoodId,
                     FoodName = ci.Food.Name,
                     Quantity = ci.Quantity,
-                    Price = ci.Food.Price
+                    Price = ci.Food.Price,
+                    ImageUrl = ci.Food.ImageUrl
                 }).ToList() ?? new List<CartItemViewModel>()
             };
 
@@ -119,7 +120,7 @@ namespace FoodEx.Controllers
             _context.CartItems.RemoveRange(cart.Items);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Orders");
+            return RedirectToAction("UserOrders", "Orders");
         }
     }
 }
