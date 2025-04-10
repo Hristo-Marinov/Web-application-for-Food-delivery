@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "_Layout";
+    string error = ViewData["ErrorMessage"]?.ToString() ?? "An unexpected error occurred.";
+    string path = ViewData["Path"]?.ToString();
+}
+
+<div class="text-center mt-5">
+    <h1>Unexpected Error</h1>
+    <p>@error</p>
+    @if (!string.IsNullOrEmpty(path))
+    {
+        <p><strong>Path:</strong> @path</p>
+    }
+    <a class="btn btn-danger mt-3" asp-controller="Home" asp-action="Index">Back to Home</a>
+</div>

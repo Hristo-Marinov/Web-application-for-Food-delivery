@@ -60,7 +60,9 @@ var app = builder.Build();
 // Enforce HTTPS in production
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error/Exception");
+    //app.UseExceptionHandler("/Home/Error");
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
     app.UseHsts();
 }
 
@@ -72,6 +74,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStatusCodePagesWithReExecute("/Error/{0}"); 
+app.UseExceptionHandler("/Error/Exception");
 
 app.MapControllerRoute(
     name: "restaurant",
@@ -136,6 +141,17 @@ app.MapControllerRoute(
     name: "restaurantDeleteFood", 
     pattern: "Restaurant/DeleteFood/{id?}", 
     defaults: new { controller = "Restaurant", action = "DeleteFood" });
+
+app.MapControllerRoute(
+    name: "adminPanel",
+    pattern: "Admin/Panel",
+    defaults: new { controller = "Admin", action = "AdminPanel" });
+
+app.MapControllerRoute(
+    name: "error",
+    pattern: "Error/{statusCode?}",
+    defaults: new { controller = "Error", action = "StatusCodeHandler" });
+
 
 app.MapRazorPages();
 

@@ -54,17 +54,17 @@ namespace FoodEx.Controllers
         [Authorize(Roles = "DeliveryGuy")]
         public async Task<IActionResult> DeliveryPanel()
         {
-            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.LockoutEnabled)
+            {
+                return Unauthorized("Your account is not verified by the admin yet.");
+            }
 
             var orders = await _context.Orders
                 .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Food)
-                .Include(o => o.Restaurant)
-                .Include(o => o.User)
-                .Include(o => o.DeliveryAddress)
-                .Where(o =>
-                    (o.Status == OrderStatus.HandedToDelivery && o.DeliveryGuyId == null) ||
-                    (o.DeliveryGuyId == userId))
+                .ThenInclude(oi => oi.Food)
+                .Where(o => o.Status == OrderStatus.Prepared || (o.DeliveryGuyId != null && o.DeliveryGuyId == user.Id))
                 .ToListAsync();
 
             return View("DeliveryPanel", orders);

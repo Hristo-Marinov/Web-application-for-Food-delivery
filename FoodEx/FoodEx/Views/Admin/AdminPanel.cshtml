@@ -1,0 +1,45 @@
+﻿@model List<(FoodEx.Entity.ApplicationUser User, string Role)>
+
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<h2>Admin Panel</h2>
+
+<table class="table table-bordered mt-4">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Verification Status</th>
+            <th>Toggle Verification</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.User.Email</td>
+                <td>@item.Role</td>
+                <td>
+                    @if (item.User.LockoutEnabled)
+                    {
+                        <span class="text-danger">Not Verified</span>
+                    }
+                    else
+                    {
+                        <span class="text-success">Verified</span>
+                    }
+                </td>
+                <td>
+                    <form asp-action="ToggleVerification" method="post">
+                        <input type="hidden" name="userId" value="@item.User.Id" />
+                        <button type="submit" class="btn btn-sm @(item.User.LockoutEnabled ? "btn-success" : "btn-warning")">
+                            @(item.User.LockoutEnabled ? "Verify" : "Unverify")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

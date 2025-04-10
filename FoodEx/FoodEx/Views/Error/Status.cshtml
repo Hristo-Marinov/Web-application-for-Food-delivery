@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "_Layout";
+    int code = (int)ViewData["StatusCode"];
+    string message = code switch
+    {
+        400 => "Bad Request",
+        401 => "Unauthorized",
+        403 => "Forbidden",
+        404 => "Not Found",
+        405 => "Method Not Allowed",
+        406 => "Not Acceptable",
+        407 => "Proxy Authentication Required",
+        408 => "Request Timeout",
+        409 => "Conflict",
+        410 => "Gone",
+        500 => "Internal Server Error",
+        501 => "Not Implemented",
+        502 => "Bad Gateway",
+        503 => "Service Unavailable",
+        504 => "Gateway Timeout",
+        505 => "HTTP Version Not Supported",
+        _ => "An unexpected error occurred"
+    };
+}
+
+<div class="text-center mt-5">
+    <h1>Error @code</h1>
+    <p>@message</p>
+    <a class="btn btn-primary mt-3" asp-controller="Home" asp-action="Index">Back to Home</a>
+</div>

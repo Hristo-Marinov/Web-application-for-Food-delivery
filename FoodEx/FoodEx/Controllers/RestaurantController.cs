@@ -43,15 +43,9 @@ namespace FoodEx.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (user == null)
+            if (user == null || user.LockoutEnabled)
             {
-                ModelState.AddModelError("", "Unable to identify current user.");
-                return View(model);
-            }
-
-            if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Location) || string.IsNullOrEmpty(model.Phone))
-            {
-                ModelState.AddModelError("", "All fields are required.");
+                ModelState.AddModelError("", "Your account is not verified to create a restaurant.");
                 return View(model);
             }
 
@@ -63,18 +57,11 @@ namespace FoodEx.Controllers
                 OwnerUserId = user.Id
             };
 
-            try
-            {
-                _context.Restaurants.Add(restaurant);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("MyRestaurant");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", $"Error saving restaurant: {ex.Message}");
-                return View(model);
-            }
+            _context.Restaurants.Add(restaurant);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("MyRestaurant");
         }
+
 
 
         public IActionResult AddFood()
