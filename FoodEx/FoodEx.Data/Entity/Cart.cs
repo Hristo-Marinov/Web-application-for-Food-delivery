@@ -1,4 +1,6 @@
-﻿namespace FoodEx.Entity
+﻿using FoodEx.Entity;
+
+namespace FoodEx.Data.Entity
 {
     public class Cart
     {

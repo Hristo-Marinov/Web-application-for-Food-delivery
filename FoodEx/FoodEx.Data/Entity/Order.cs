@@ -6,9 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using FoodEx.Models;
+using FoodEx.Data.Entity;
+using FoodEx.Entity;
 
-namespace FoodEx.Entity
+namespace FoodEx.Data.Entity
 {
     public class Order
     {

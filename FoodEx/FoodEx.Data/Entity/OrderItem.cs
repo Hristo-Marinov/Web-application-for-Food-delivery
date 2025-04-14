@@ -1,4 +1,4 @@
-﻿namespace FoodEx.Entity
+﻿namespace FoodEx.Data.Entity
 {
     public class OrderItem
     {

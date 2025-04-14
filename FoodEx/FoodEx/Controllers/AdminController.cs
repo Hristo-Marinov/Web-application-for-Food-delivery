@@ -1,5 +1,6 @@
-﻿using FoodEx.Entity;
-using FoodEx.Entity.Context;
+﻿using FoodEx.Data;
+using FoodEx.Data.Entity.Context;
+using FoodEx.Entity;
 using FoodEx.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -61,7 +62,7 @@ namespace FoodEx.Controllers
             var order = await _context.Orders.FindAsync(orderId);
             if (order == null) return NotFound();
 
-            order.Status = newStatus;
+            order.Status = (Data.OrderStatus)newStatus;
             await _context.SaveChangesAsync();
 
             return RedirectToAction("AdminPanel");

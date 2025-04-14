@@ -1,4 +1,4 @@
-﻿using FoodEx.Entity;
+﻿using FoodEx.Data.Entity;
 
 namespace FoodEx.Models
 {

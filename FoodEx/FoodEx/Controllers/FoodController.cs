@@ -1,42 +1,28 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using FoodEx.Entity;
-using FoodEx.Entity.Context;
-using System.Linq;
-using System.Threading.Tasks;
 using FoodEx.Models;
+using System.Threading.Tasks;
 
 namespace FoodEx.Controllers
 {
     [Authorize]
     public class FoodController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFoodService _foodService;
 
-        public FoodController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public FoodController(UserManager<ApplicationUser> userManager, IFoodService foodService)
         {
-            _context = context;
             _userManager = userManager;
+            _foodService = foodService;
         }
 
         [AllowAnonymous]
         public IActionResult FoodDetails(int id)
         {
-            var food = _context.Foods
-                .Where(f => f.FoodId == id)
-                .Select(f => new FoodViewModel
-                {
-                    FoodId = f.FoodId,
-                    Name = f.Name,
-                    Description = f.Description,
-                    Price = f.Price,
-                    RestaurantName = f.Restaurant.Name,
-                    ImageUrl = f.ImageUrl
-                }).FirstOrDefault();
-
+            var food = _foodService.GetFoodDetails(id);
             if (food == null)
             {
                 return NotFound();
@@ -49,28 +35,7 @@ namespace FoodEx.Controllers
         public async Task<IActionResult> OrderNow(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var cart = await _context.Carts
-                .Include(c => c.Items)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-
-            if (cart == null)
-            {
-                cart = new Cart { UserId = userId };
-                _context.Carts.Add(cart);
-                await _context.SaveChangesAsync();
-            }
-
-            var existingItem = cart.Items.FirstOrDefault(ci => ci.FoodId == id);
-            if (existingItem != null)
-            {
-                existingItem.Quantity++;
-            }
-            else
-            {
-                cart.Items.Add(new CartItem { FoodId = id, Quantity = 1 });
-            }
-
-            await _context.SaveChangesAsync();
+            await _foodService.AddFoodToCartAsync(id, userId);
             return RedirectToAction("Index", "Cart");
         }
     }

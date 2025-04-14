@@ -1,43 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FoodEx.Entity.Context;
-using System.Linq;
+using FoodEx.Services;
+using System.Threading.Tasks;
 
 namespace FoodEx.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IHomeService _homeService;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(IHomeService homeService)
         {
-            _context = context;
+            _homeService = homeService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.RestaurantCount = _context.Restaurants.Count();
-            ViewBag.FoodCount = _context.Foods.Count();
-            ViewBag.DeliveryGuyCount = _context.Users
-                .Where(u => _context.UserRoles
-                    .Where(ur => ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "DeliveryGuy").Id)
-                    .Select(ur => ur.UserId)
-                    .Contains(u.Id))
-                .Count();
+            ViewBag.RestaurantCount = await _homeService.GetRestaurantCountAsync();
+            ViewBag.FoodCount = await _homeService.GetFoodCountAsync();
+            ViewBag.DeliveryGuyCount = await _homeService.GetDeliveryGuyCountAsync();
 
-            var restaurants = _context.Restaurants.ToList();
+            var restaurants = await _homeService.GetAllRestaurantsAsync();
             return View(restaurants);
         }
 
-        public IActionResult TRF()
+        public async Task<IActionResult> Place()
         {
-            var restaurants = _context.Restaurants.ToList();
-            return View("TRF", restaurants);
-        }
-
-        public IActionResult Place()
-        {
-            var restaurants = _context.Restaurants.ToList();
-            return View();
+            var restaurants = await _homeService.GetAllRestaurantsAsync();
+            return View(restaurants);
         }
     }
 }

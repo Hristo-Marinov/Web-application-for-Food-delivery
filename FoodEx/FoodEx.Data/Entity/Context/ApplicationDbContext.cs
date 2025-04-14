@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FoodEx.Entity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodEx.Entity.Context
+namespace FoodEx.Data.Entity.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

@@ -1,7 +1,9 @@
-using FoodEx.Entity.Context;
+
 using FoodEx.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using FoodEx.Services;
+using FoodEx.Data.Entity.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,7 @@ Console.WriteLine($"Using Connection String: {connectionString}");
 // Configure the database context with Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, sqlOptions =>
-        sqlOptions.MigrationsAssembly("FoodEx")));
+        sqlOptions.MigrationsAssembly("FoodEx.Data")));
 
 // Configure Identity (Users + Roles)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -54,6 +56,13 @@ builder.Services.AddAntiforgery(options =>
 // Add MVC and Razor Pages
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IPlaceService, PlaceService>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
 
@@ -146,11 +155,6 @@ app.MapControllerRoute(
     name: "adminPanel",
     pattern: "Admin/Panel",
     defaults: new { controller = "Admin", action = "AdminPanel" });
-
-app.MapControllerRoute(
-    name: "error",
-    pattern: "Error/{statusCode?}",
-    defaults: new { controller = "Error", action = "StatusCodeHandler" });
 
 
 app.MapRazorPages();

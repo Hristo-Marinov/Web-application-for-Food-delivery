@@ -1,61 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FoodEx.Entity.Context;
-using System.Linq;
+using FoodEx.Services;
+using System.Threading.Tasks;
 
 namespace FoodEx.Controllers
 {
     public class PlaceController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPlaceService _placeService;
 
-        public PlaceController(ApplicationDbContext context)
+        public PlaceController(IPlaceService placeService)
         {
-            _context = context;
+            _placeService = placeService;
         }
 
-        public IActionResult Place()
+        public async Task<IActionResult> Place()
         {
-            var restaurants = _context.Restaurants.ToList();
+            var restaurants = await _placeService.GetAllRestaurantsAsync();
             return View(restaurants);
         }
 
-        public IActionResult PlaceDetails(int id)
+        public async Task<IActionResult> PlaceDetails(int id)
         {
-            var place = _context.Restaurants
-                .Where(r => r.RestaurantId == id)
-                .Select(r => new {
-                    r.RestaurantId,
-                    r.Name,
-                    r.Location,
-                    Foods = r.Foods.ToList()
-                }).FirstOrDefault();
-
-            if (place == null)
+            var restaurant = await _placeService.GetRestaurantWithFoodsAsync(id);
+            if (restaurant == null)
             {
                 return NotFound();
             }
 
-            return View("PlaceDetails", place);
+            return View("PlaceDetails", restaurant);
         }
 
-        public IActionResult FoodDetails(int id)
+        public async Task<IActionResult> FoodDetails(int id)
         {
-            var food = _context.Foods
-                .Where(f => f.FoodId == id)
-                .Select(f => new {
-                    f.FoodId,
-                    f.Name,
-                    f.Description,
-                    f.Price,
-                    RestaurantName = f.Restaurant.Name
-                }).FirstOrDefault();
-
+            var food = await _placeService.GetFoodWithRestaurantAsync(id);
             if (food == null)
             {
                 return NotFound();
             }
 
-            return View("FoodDetails", food);
+            return View("FoodDetails", new
+            {
+                food.FoodId,
+                food.Name,
+                food.Description,
+                food.Price,
+                RestaurantName = food.Restaurant?.Name
+            });
         }
     }
 }

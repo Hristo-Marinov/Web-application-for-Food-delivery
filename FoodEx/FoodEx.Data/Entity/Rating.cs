@@ -5,19 +5,21 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoodEx.Entity;
 
-namespace FoodEx.Entity
+namespace FoodEx.Data.Entity
 {
-    public class Address
+    public class Rating
     {
         [Key]
-        public int AddressId { get; set; }
+        public int RatingId { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string PostalCode { get; set; }
-        public string Country { get; set; }
+        public int FoodId { get; set; }
+        [ForeignKey("FoodId")]
+        public Food Food { get; set; }
+        public int RatingValue { get; set; }
+        public string Comment { get; set; }
     }
 }
