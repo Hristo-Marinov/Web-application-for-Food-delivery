@@ -13,12 +13,6 @@ namespace FoodEx.Controllers
             _placeService = placeService;
         }
 
-        public async Task<IActionResult> Place()
-        {
-            var restaurants = await _placeService.GetAllRestaurantsAsync();
-            return View(restaurants);
-        }
-
         public async Task<IActionResult> PlaceDetails(int id)
         {
             var restaurant = await _placeService.GetRestaurantWithFoodsAsync(id);
@@ -46,6 +40,13 @@ namespace FoodEx.Controllers
                 food.Price,
                 RestaurantName = food.Restaurant?.Name
             });
+        }
+
+        public async Task<IActionResult> Place(string searchTerm)
+        {
+            var restaurants = await _placeService.GetRestaurantsAsync(searchTerm);
+            ViewBag.SearchTerm = searchTerm;
+            return View(restaurants);
         }
     }
 }

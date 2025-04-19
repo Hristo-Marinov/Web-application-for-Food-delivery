@@ -10,5 +10,6 @@ namespace FoodEx.Services
         Task<List<Restaurant>> GetAllRestaurantsAsync();
         Task<Restaurant> GetRestaurantWithFoodsAsync(int id);
         Task<Food> GetFoodWithRestaurantAsync(int id);
+        Task<List<Restaurant>> GetRestaurantsAsync(string searchTerm = null);
     }
 }

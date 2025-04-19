@@ -35,5 +35,17 @@ namespace FoodEx.Services
                 .Include(f => f.Restaurant)
                 .FirstOrDefaultAsync(f => f.FoodId == id);
         }
+
+        public async Task<List<Restaurant>> GetRestaurantsAsync(string searchTerm = null)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return await _context.Restaurants.ToListAsync();
+            }
+
+            return await _context.Restaurants
+                .Where(r => r.Name.ToLower().Contains(searchTerm.ToLower()))
+                .ToListAsync();
+        }
     }
 }

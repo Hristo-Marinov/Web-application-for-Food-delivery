@@ -130,3 +130,8 @@ body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     transform: translateY(-5px);
 }
+
+.navbar .nav-link:hover {
+    color: rgb(255, 86, 0, 0.15);
+    font-weight: 500;
+}

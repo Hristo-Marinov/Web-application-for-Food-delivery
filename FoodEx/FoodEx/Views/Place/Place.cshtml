@@ -1,13 +1,20 @@
-﻿@model IEnumerable<FoodEx.Data.Entity.Restaurant>
+﻿@model List<FoodEx.Data.Entity.Restaurant>
 
 @{
     ViewData["Title"] = "Restaurants";
 }
 
-<h2 class="text-center my-4">Our Partnered Restaurants</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Find Your Favorite Restaurant</h2>
 
-<div class="container">
-    <div class="row justify-content-center">
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="searchTerm" class="form-control" placeholder="Search restaurants by name..." value="@ViewBag.SearchTerm">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+
+    <div class="row">
         @foreach (var restaurant in Model)
         {
             <div class="col-md-4 col-sm-6 mb-4">
