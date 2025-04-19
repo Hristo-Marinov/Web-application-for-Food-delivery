@@ -12,11 +12,13 @@ namespace FoodEx.Controllers
     public class OrdersController : Controller
     {
         private readonly IOrderService _orderService;
+        private readonly IDeliveryService _deliveryService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrdersController(IOrderService orderService, UserManager<ApplicationUser> userManager)
+        public OrdersController(IOrderService orderService, IDeliveryService deliveryService, UserManager<ApplicationUser> userManager)
         {
             _orderService = orderService;
+            _deliveryService = deliveryService;
             _userManager = userManager;
         }
 
@@ -45,8 +47,16 @@ namespace FoodEx.Controllers
                 return Unauthorized("Your account is not verified by the admin yet.");
             }
 
-            var orders = await _orderService.GetDeliveryOrdersAsync(user);
-            return View("DeliveryPanel", orders);
+            var availableOrders = await _deliveryService.GetAvailableOrdersAsync();
+            var myOrders = await _deliveryService.GetMyOrdersAsync(user.Id);
+
+            var model = new DeliveryPanelViewModel
+            {
+                AvailableOrders = availableOrders,
+                MyOrders = myOrders
+            };
+
+            return View("DeliveryPanel", model);
         }
 
         [HttpPost]
@@ -67,11 +77,15 @@ namespace FoodEx.Controllers
             var result = await _orderService.UpdateOrderStatusByDeliveryAsync(orderId, status, userId);
             if (!result) return NotFound();
 
-            if (status == OrderStatus.Delivered)
-            {
-                TempData["Message"] = $"Order #{orderId} marked as delivered and removed from system.";
-            }
+            return RedirectToAction("DeliveryPanel");
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "DeliveryGuy")]
+        public async Task<IActionResult> ClaimOrder(int orderId)
+        {
+            var userId = _userManager.GetUserId(User);
+            var success = await _deliveryService.ClaimOrderAsync(orderId, userId);
             return RedirectToAction("DeliveryPanel");
         }
 

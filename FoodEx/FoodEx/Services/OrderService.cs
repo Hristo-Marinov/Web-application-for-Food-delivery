@@ -46,8 +46,32 @@ namespace FoodEx.Services
             return await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
-                .Where(o => o.Status == OrderStatus.HandedToDelivery || o.DeliveryGuyId == deliveryUser.Id)
+                .Where(o => o.DeliveryGuyId == deliveryUser.Id)
                 .ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAvailableDeliveryOrdersAsync()
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Food)
+                .Include(o => o.Restaurant)
+                .Where(o => o.Status == OrderStatus.HandedToDelivery && o.DeliveryGuyId == null)
+                .ToListAsync();
+        }
+
+        public async Task<bool> ClaimOrderAsync(int orderId, string deliveryUserId)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+
+            if (order == null || order.Status != OrderStatus.HandedToDelivery || order.DeliveryGuyId != null)
+                return false;
+
+            order.DeliveryGuyId = deliveryUserId;
+            order.Status = OrderStatus.OutForDelivery;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> UpdateOrderStatusByRestaurantAsync(int orderId, OrderStatus status)
@@ -66,14 +90,10 @@ namespace FoodEx.Services
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
-            if (order == null) return false;
+            if (order == null || order.DeliveryGuyId != deliveryUserId)
+                return false;
 
             order.Status = status;
-
-            if (order.DeliveryGuyId == null)
-            {
-                order.DeliveryGuyId = deliveryUserId;
-            }
 
             if (status == OrderStatus.Delivered)
             {

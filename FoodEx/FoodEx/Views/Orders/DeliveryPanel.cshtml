@@ -1,40 +1,73 @@
-﻿@model IEnumerable<FoodEx.Data.Entity.Order>
+﻿@model FoodEx.Models.DeliveryPanelViewModel
 
 @{
     ViewData["Title"] = "Delivery Panel";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Delivery Dashboard</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Address</th>
-            <th>Status</th>
-            <th>Update Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
-            <tr>
-                <td>@order.OrderId</td>
-                <td>@order.User?.UserName</td>
-                <td>@order.DeliveryAddress?.Street</td>
-                <td>@order.Status</td>
-                <td>
-                    <form asp-action="UpdateOrderStatusByDelivery" method="post">
-                        <input type="hidden" name="orderId" value="@order.OrderId" />
-                        <select name="status" class="form-select form-select-sm">
-                            <option value="Delivering">Delivering</option>
-                            <option value="Delivered">Delivered</option>
-                        </select>
-                        <button type="submit" class="btn btn-sm btn-success mt-1">Update</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Available Orders</h4>
+            @if (Model.AvailableOrders.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var order in Model.AvailableOrders)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Order #@order.OrderId</strong><br />
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <div>@item.Food.Name @order.OrderItems.Count</div>
+                                }
+                            </div>
+                            <form asp-action="ClaimOrder" method="post">
+                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                <button type="submit" class="btn btn-primary btn-sm">Claim</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No available orders.</p>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <h4>My Orders</h4>
+            @if (Model.MyOrders.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var order in Model.MyOrders)
+                    {
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Order #@order.OrderId</strong> - Status: @order.Status<br />
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <div>@item.Food.Name  @order.OrderItems.Count</div>
+                                }
+                                <form asp-action="UpdateOrderStatusByDelivery" method="post" class="mt-2 d-flex gap-2 align-items-center">
+                                    <input type="hidden" name="orderId" value="@order.OrderId" />
+                                    <select name="status" class="form-select form-select-sm w-auto">
+                                        <option value="OutForDelivery">Out For Delivery</option>
+                                        <option value="Delivered">Delivered</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-success btn-sm">Update</button>
+                                </form>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>You have no assigned orders.</p>
+            }
+        </div>
+    </div>
+</div>
