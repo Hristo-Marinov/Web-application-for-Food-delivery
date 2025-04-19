@@ -1,42 +1,52 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using FoodEx.Entity;
+using FoodEx.Data;
 using FoodEx.Models;
+using FoodEx.Services;
 using System.Threading.Tasks;
+using FoodEx.Entity;
 
 namespace FoodEx.Controllers
 {
     [Authorize]
     public class FoodController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFoodService _foodService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FoodController(UserManager<ApplicationUser> userManager, IFoodService foodService)
+        public FoodController(IFoodService foodService, UserManager<ApplicationUser> userManager)
         {
-            _userManager = userManager;
             _foodService = foodService;
+            _userManager = userManager;
         }
 
         [AllowAnonymous]
-        public IActionResult FoodDetails(int id)
+        public async Task<IActionResult> FoodDetails(int id)
         {
-            var food = _foodService.GetFoodDetails(id);
-            if (food == null)
+            var foodViewModel = await _foodService.GetFoodDetailsAsync(id);
+            if (foodViewModel == null)
             {
                 return NotFound();
             }
 
-            return View("~/Views/Food/FoodDetails.cshtml", food);
+            return View("~/Views/Food/FoodDetails.cshtml", foodViewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> OrderNow(int id)
         {
             var userId = _userManager.GetUserId(User);
-            await _foodService.AddFoodToCartAsync(id, userId);
+            await _foodService.AddToCartAsync(userId, id);
             return RedirectToAction("Index", "Cart");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitRating(int foodId, int ratingValue, string comment)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            await _foodService.SubmitRatingAsync(foodId, user.Id, ratingValue, comment);
+            return RedirectToAction("FoodDetails", new { id = foodId });
         }
     }
 }

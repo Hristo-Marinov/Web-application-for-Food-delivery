@@ -10,5 +10,11 @@
         public int RestaurantId { get; set; }
         public string ImageUrl { get; set; }
         public string RestaurantName { get; set; }
+        public double AverageRating { get; set; }
+
+        public List<CommentViewModel> Comments { get; set; }
+
+        public List<RatingViewModel> Ratings { get; set; } = new List<RatingViewModel>();
+        public RatingViewModel NewRating { get; set; } = new RatingViewModel();
     }
 }

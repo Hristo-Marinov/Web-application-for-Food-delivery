@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 public interface IFoodService
 {
-    FoodViewModel GetFoodDetails(int id);
-    Task AddFoodToCartAsync(int foodId, string userId);
+    Task<FoodViewModel> GetFoodDetailsAsync(int foodId);
+    Task AddToCartAsync(string userId, int foodId);
+    Task SubmitRatingAsync(int foodId, string userId, int ratingValue, string comment);
 }
