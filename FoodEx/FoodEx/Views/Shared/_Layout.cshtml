@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+    Context.Response.Headers["Pragma"] = "no-cache";
+    Context.Response.Headers["Expires"] = "0";
+    var isAuthenticated = HttpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -61,7 +71,7 @@
                     </ul>
 
                     <ul class="navbar-nav align-items-center">
-                        @if (User.Identity.IsAuthenticated)
+                        @if (isAuthenticated)
                         {
                             <li class="nav-item me-3 text-muted small">
                                 Hello, @User.Identity.Name
@@ -92,15 +102,15 @@
         </nav>
     </header>
 
-
-    <div class="container">
+    <div class="container mt-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer text-muted mt-4 py-3">
+        <div class="container text-center">
+            &copy; @DateTime.Now.Year - FoodEx
         </div>
     </footer>
 

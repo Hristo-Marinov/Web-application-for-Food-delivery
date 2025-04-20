@@ -23,16 +23,37 @@
                 <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" />
             </div>
             <div class="input-group">
-                <select asp-for="SelectedRole" asp-items="Model.AvailableRoles" class="form-select"></select>
+                <select asp-for="SelectedRole" asp-items="Model.AvailableRoles" class="form-select" id="roleSelect"></select>
             </div>
+
             <div class="form-footer">
                 <button type="submit" class="btn-auth">Register</button>
             </div>
+
+            <div class="text-center mt-3" id="googleAuthSection" style="display: none;">
+                <p>Or</p>
+                <a class="btn btn-outline-dark" asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google">
+                    <i class="bi bi-google me-2"></i> Sign up with Google
+                </a>
+            </div>
         </form>
     </div>
+
     <div class="auth-overlay">
         <h2>Welcome Back!</h2>
         <p>To keep connected with us please login with your info</p>
+        <p>The Google Register Option is only available for the Users</p>
         <a class="btn-auth-outline" asp-action="Login">Sign In</a>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById("roleSelect").addEventListener("change", function () {
+            var selectedRole = this.value;
+            var googleSection = document.getElementById("googleAuthSection");
+            googleSection.style.display = selectedRole === "User" ? "block" : "none";
+        });
+        document.getElementById("roleSelect").dispatchEvent(new Event("change"));
+    </script>
+}

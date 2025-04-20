@@ -1,13 +1,12 @@
-
 using FoodEx.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FoodEx.Services;
 using FoodEx.Data.Entity.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get the connection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
@@ -17,12 +16,10 @@ if (string.IsNullOrEmpty(connectionString))
 
 Console.WriteLine($"Using Connection String: {connectionString}");
 
-// Configure the database context with Identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, sqlOptions =>
         sqlOptions.MigrationsAssembly("FoodEx.Data")));
 
-// Configure Identity (Users + Roles)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -35,17 +32,31 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Secure Cookie Authentication Configuration
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.HttpOnly = true; // Secure against XSS
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Enforce HTTPS
-    options.Cookie.SameSite = SameSiteMode.Strict; // Prevents cross-origin cookie issues
-    options.LoginPath = "/User/Login";
-    options.AccessDeniedPath = "/User/AccessDenied";
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.SlidingExpiration = true;
 });
 
-// Enforce Antiforgery Cookies for HTTPS
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
+.AddCookie()
+.AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    googleOptions.SignInScheme = IdentityConstants.ExternalScheme;
+});
+
 builder.Services.AddAntiforgery(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -53,7 +64,6 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.SameSite = SameSiteMode.Strict;
 });
 
-// Add MVC and Razor Pages
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -67,16 +77,13 @@ builder.Services.AddScoped<IDeliveryService, DeliveryService>();
 
 var app = builder.Build();
 
-// Enforce HTTPS in production
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error/Exception");
-    //app.UseExceptionHandler("/Home/Error");
     app.UseStatusCodePagesWithReExecute("/Error/{0}");
     app.UseHsts();
 }
 
-// Redirect HTTP to HTTPS
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -85,7 +92,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStatusCodePagesWithReExecute("/Error/{0}"); 
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseExceptionHandler("/Error/Exception");
 
 app.MapControllerRoute(
@@ -138,25 +145,24 @@ app.MapControllerRoute(
     defaults: new { controller = "Restaurant", action = "MyFoods" });
 
 app.MapControllerRoute(
-    name: "restaurantCreate", 
-    pattern: "Restaurant/Create", 
+    name: "restaurantCreate",
+    pattern: "Restaurant/Create",
     defaults: new { controller = "Restaurant", action = "Create" });
 
 app.MapControllerRoute(
-    name: "restaurantAddFood", 
-    pattern: "Restaurant/AddFood", 
+    name: "restaurantAddFood",
+    pattern: "Restaurant/AddFood",
     defaults: new { controller = "Restaurant", action = "AddFood" });
 
 app.MapControllerRoute(
-    name: "restaurantDeleteFood", 
-    pattern: "Restaurant/DeleteFood/{id?}", 
+    name: "restaurantDeleteFood",
+    pattern: "Restaurant/DeleteFood/{id?}",
     defaults: new { controller = "Restaurant", action = "DeleteFood" });
 
 app.MapControllerRoute(
     name: "adminPanel",
     pattern: "Admin/Panel",
     defaults: new { controller = "Admin", action = "AdminPanel" });
-
 
 app.MapRazorPages();
 

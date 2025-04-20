@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using FoodEx.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodEx.Controllers
 {
@@ -32,10 +34,7 @@ namespace FoodEx.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
@@ -88,13 +87,7 @@ namespace FoodEx.Controllers
 
                 if (!await _roleManager.RoleExistsAsync(roleName))
                 {
-                    var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
-                    if (!roleResult.Succeeded)
-                    {
-                        ModelState.AddModelError("", $"Failed to create role: {roleName}");
-                        model.AvailableRoles = GetRoleList();
-                        return View(model);
-                    }
+                    await _roleManager.CreateAsync(new IdentityRole(roleName));
                 }
 
                 await _userManager.AddToRoleAsync(user, roleName);
@@ -127,6 +120,60 @@ namespace FoodEx.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return RedirectToAction(nameof(Login));
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return View("PostLoginReload");
+            }
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            if (email != null)
+            {
+                var user = new ApplicationUser { UserName = email, Email = email };
+                var identityResult = await _userManager.CreateAsync(user);
+                if (identityResult.Succeeded)
+                {
+                    await _userManager.AddLoginAsync(user, info);
+                    await _userManager.AddToRoleAsync(user, "User");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return View("PostLoginReload");
+                }
+            }
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        public IActionResult PostLoginReload()
+        {
+            return View();
         }
     }
 }

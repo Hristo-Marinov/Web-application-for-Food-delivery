@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    var googleLoginUrl = Url.Action("ExternalLogin", "Account", new { provider = "Google", returnUrl = "/" });
+}
+
 <link rel="stylesheet" href="~/css/auth.css" />
 
 <div class="auth-container">
@@ -22,6 +26,11 @@
             <div class="form-footer">
                 <a href="#">Forgot your password?</a>
                 <button type="submit" class="btn-auth">Sign In</button>
+            </div>
+            <div class="text-center mt-3">
+                <a class="btn btn-outline-dark" href="@googleLoginUrl">
+                    <i class="bi bi-google me-1"></i> Sign in with Google
+                </a>
             </div>
         </form>
     </div>
