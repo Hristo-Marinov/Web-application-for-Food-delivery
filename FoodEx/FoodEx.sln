@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodEx", "FoodEx\FoodEx.csproj", "{6C6108CF-7574-422A-9C99-DBA5AA493745}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodEx.Data", "FoodEx.Data\FoodEx.Data.csproj", "{17C3380D-7C2E-4541-80D6-4D77D52FDF9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodEx.Data", "FoodEx.Data\FoodEx.Data.csproj", "{17C3380D-7C2E-4541-80D6-4D77D52FDF9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodEx.Tests", "FoodEx.Tests\FoodEx.Tests.csproj", "{FB0D2D0D-6539-47F8-930F-83362AC41EBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{17C3380D-7C2E-4541-80D6-4D77D52FDF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17C3380D-7C2E-4541-80D6-4D77D52FDF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17C3380D-7C2E-4541-80D6-4D77D52FDF9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB0D2D0D-6539-47F8-930F-83362AC41EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB0D2D0D-6539-47F8-930F-83362AC41EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB0D2D0D-6539-47F8-930F-83362AC41EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB0D2D0D-6539-47F8-930F-83362AC41EBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
