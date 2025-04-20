@@ -4,6 +4,10 @@
     ViewData["Title"] = "Delivery Panel";
 }
 
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <div class="container mt-4">
     <h2 class="mb-4">Delivery Dashboard</h2>
 
@@ -15,19 +19,38 @@
                 <ul class="list-group">
                     @foreach (var order in Model.AvailableOrders)
                     {
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        var mapId = "map-available-" + order.OrderId;
+                        <li class="list-group-item">
                             <div>
                                 <strong>Order #@order.OrderId</strong><br />
+                                <small><strong>Street:</strong> @order.DeliveryAddress?.Street</small><br />
                                 @foreach (var item in order.OrderItems)
                                 {
-                                    <div>@item.Food.Name @order.OrderItems.Count</div>
+                                    <div>@item.Food.Name x @item.Quantity</div>
                                 }
+
+                                <div id="@mapId" style="height: 200px;" class="my-2 rounded border"></div>
+
+                                <form asp-action="ClaimOrder" method="post">
+                                    <input type="hidden" name="orderId" value="@order.OrderId" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Claim</button>
+                                </form>
                             </div>
-                            <form asp-action="ClaimOrder" method="post">
-                                <input type="hidden" name="orderId" value="@order.OrderId" />
-                                <button type="submit" class="btn btn-primary btn-sm">Claim</button>
-                            </form>
                         </li>
+                        <script>
+                            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=@order.DeliveryAddress?.Street`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.length > 0) {
+                                        const map = L.map('@mapId').setView([data[0].lat, data[0].lon], 15);
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                            attribution: '© OpenStreetMap contributors'
+                                        }).addTo(map);
+                                        L.marker([data[0].lat, data[0].lon]).addTo(map)
+                                            .bindPopup('@order.DeliveryAddress?.Street').openPopup();
+                                    }
+                                });
+                        </script>
                     }
                 </ul>
             }
@@ -44,13 +67,18 @@
                 <ul class="list-group">
                     @foreach (var order in Model.MyOrders)
                     {
+                        var mapId = "map-my-" + order.OrderId;
                         <li class="list-group-item">
                             <div>
                                 <strong>Order #@order.OrderId</strong> - Status: @order.Status<br />
+                                <small><strong>Street:</strong> @order.DeliveryAddress?.Street</small><br />
                                 @foreach (var item in order.OrderItems)
                                 {
-                                    <div>@item.Food.Name  @order.OrderItems.Count</div>
+                                    <div>@item.Food.Name x @item.Quantity</div>
                                 }
+
+                                <div id="@mapId" style="height: 200px;" class="my-2 rounded border"></div>
+
                                 <form asp-action="UpdateOrderStatusByDelivery" method="post" class="mt-2 d-flex gap-2 align-items-center">
                                     <input type="hidden" name="orderId" value="@order.OrderId" />
                                     <select name="status" class="form-select form-select-sm w-auto">
@@ -61,6 +89,20 @@
                                 </form>
                             </div>
                         </li>
+                        <script>
+                            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=@order.DeliveryAddress?.Street`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.length > 0) {
+                                        const map = L.map('@mapId').setView([data[0].lat, data[0].lon], 15);
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                            attribution: '© OpenStreetMap contributors'
+                                        }).addTo(map);
+                                        L.marker([data[0].lat, data[0].lon]).addTo(map)
+                                            .bindPopup('@order.DeliveryAddress?.Street').openPopup();
+                                    }
+                                });
+                        </script>
                     }
                 </ul>
             }

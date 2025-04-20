@@ -1,12 +1,12 @@
-﻿using FoodEx.Entity;
+﻿using FoodEx.Data;
+using FoodEx.Data.Entity;
 using FoodEx.Data.Entity.Context;
+using FoodEx.Entity;
 using FoodEx.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FoodEx.Data.Entity;
-using FoodEx.Data;
 
 namespace FoodEx.Services
 {
@@ -46,6 +46,7 @@ namespace FoodEx.Services
             return await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
+                .Include(o => o.DeliveryAddress)
                 .Where(o => o.DeliveryGuyId == deliveryUser.Id)
                 .ToListAsync();
         }
@@ -53,10 +54,24 @@ namespace FoodEx.Services
         public async Task<List<Order>> GetAvailableDeliveryOrdersAsync()
         {
             return await _context.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Food)
-                .Include(o => o.Restaurant)
                 .Where(o => o.Status == OrderStatus.HandedToDelivery && o.DeliveryGuyId == null)
+                .Include(o => o.DeliveryAddress)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Food)
+                .Select(o => new Order
+                {
+                    OrderId = o.OrderId,
+                    Status = o.Status,
+                    DeliveryAddress = new Address
+                    {
+                        Street = o.DeliveryAddress.Street
+                    },
+                    OrderItems = o.OrderItems.Select(oi => new OrderItem
+                    {
+                        Food = new Food { Name = oi.Food.Name },
+                        Quantity = oi.Quantity
+                    }).ToList()
+                })
                 .ToListAsync();
         }
 
@@ -103,6 +118,23 @@ namespace FoodEx.Services
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<OrderViewModel>> GetOrdersForDeliveryAsync()
+        {
+            return await _context.Orders
+                .Include(o => o.DeliveryAddress)
+                .Where(o => o.Status == OrderStatus.HandedToDelivery)
+                .Select(o => new OrderViewModel
+                {
+                    OrderId = o.OrderId,
+                    DeliveryGuyId = o.DeliveryGuyId,
+                    DeliveryAddressId = o.DeliveryAddressId,
+                    FullAddress = o.DeliveryAddress != null
+                        ? o.DeliveryAddress.Street
+                        : null
+                })
+                .ToListAsync();
         }
     }
 }

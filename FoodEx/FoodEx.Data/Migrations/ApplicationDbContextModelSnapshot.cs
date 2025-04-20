@@ -22,7 +22,7 @@ namespace FoodEx.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FoodEx.Data.Entity.Address", b =>
+            modelBuilder.Entity("Address", b =>
                 {
                     b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
@@ -31,15 +31,12 @@ namespace FoodEx.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
@@ -415,15 +412,15 @@ namespace FoodEx.Data.Migrations
                         {
                             Id = "admin-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1690f93e-e73b-44c2-a64f-9fe7bd9d5c9c",
+                            ConcurrencyStamp = "347e66ea-0fe1-465d-8191-1897873c8b07",
                             Email = "admin@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODEX.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4rgxzT72F1JQ4NvSqqyC47ZqBp5pSl4n5CXBesFOofSTb2NoDd1Tz6npO9z6/P/w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFk5Ocw+2u6tuhSP/f5bkLqzsTJBLUTQqQPRU1nBCHd5WUae3PtzCthoZ2PtagdaYw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "61b3a406-bed8-410d-91a8-2474a7e0cf91",
+                            SecurityStamp = "f5f9176a-a7c9-431b-884f-5ee98cbfaad5",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -431,15 +428,15 @@ namespace FoodEx.Data.Migrations
                         {
                             Id = "regular-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "80032858-ab8b-441a-a1ae-a95acad72ba2",
+                            ConcurrencyStamp = "15b31b02-dc25-4608-ab88-5ac8d996df5f",
                             Email = "user@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@FOODEX.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAELWRmrFBTyGZnbO2y8L8toae9DFmfGP9smYDfnket1RaxHtXexhuKOka0rWC5GrvAA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFuHE6gjq/TViYsXLfp1IdmlcmGaV8CMCyQ9RfwYx2OPGNpusMi69B7sns4dQ6NxQw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2a3d9db1-fa0a-4bf5-ba19-9ee1f31cc4d3",
+                            SecurityStamp = "5cc77270-3a40-4fb0-86c2-4c2ba8b09e85",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         },
@@ -447,15 +444,15 @@ namespace FoodEx.Data.Migrations
                         {
                             Id = "deliveryguy-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c8ec9849-04cc-4b5f-adfd-00208798d324",
+                            ConcurrencyStamp = "2548919a-7073-477f-929e-6c2c0a898a52",
                             Email = "deliveryguy@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DELIVERYGUY@FOODEX.COM",
                             NormalizedUserName = "DELIVERYGUY",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKM7Gtf5dMuxqQglxzIh9dlKjFy6Dw/VlwzweBXJXZIGjcLEJq+6ugCzRLC8qcO1vA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI0GnCfCq5ZTtR6fmiv/nEUtEAmshXV4XDF58AZrd5lzJMGf9pAbIkJmYLzbkK7PPw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "48dae04e-5551-4ebd-b7a8-74285c1dbe2b",
+                            SecurityStamp = "18ba1383-9cd3-4c04-b1bd-87abc80ff3e5",
                             TwoFactorEnabled = false,
                             UserName = "deliveryguy"
                         },
@@ -463,15 +460,15 @@ namespace FoodEx.Data.Migrations
                         {
                             Id = "restaurant-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "53c260f8-c924-4097-97c4-af2e625001f2",
+                            ConcurrencyStamp = "f6d3194e-83f5-44b9-a2b2-4b56f296e533",
                             Email = "restaurantowner@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                             NormalizedUserName = "RESTAURANTOWNER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ/d3zdGF3FfBjNP3UtBmfDFWwTtUYAZMNxpXF+KM3cS01/Q+pyEl99yug34zssSIg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKrvnckmpQrhG5iovtdsxqMHgROg36tqiMFM2l06qx42q/HZwSIsaPHswfl/LNtmWw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f5dbf0df-adf6-4774-b6f4-2a616fb3eb1c",
+                            SecurityStamp = "afcf41e8-d5d1-48cf-97e7-e6d13f341ca2",
                             TwoFactorEnabled = false,
                             UserName = "restaurantowner"
                         });
@@ -507,28 +504,28 @@ namespace FoodEx.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "9592a7dc-bce0-448d-98fa-bf97fb5435e5",
+                            ConcurrencyStamp = "b4c83b97-269d-47a4-995d-006cbd637bf6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "f3445890-87e7-4a57-8bc9-e7406cef8e01",
+                            ConcurrencyStamp = "1f848bb8-667f-4a91-aa13-393a47f67b6b",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f5a03f01-9cb9-4a4b-beb6-117740a166e6",
+                            ConcurrencyStamp = "c94ecd15-c832-4e54-8bc7-31dfd7ef5933",
                             Name = "DeliveryGuy",
                             NormalizedName = "DELIVERYGUY"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "61075e35-b903-4e46-a2db-55b6dac30237",
+                            ConcurrencyStamp = "8a146ba4-809a-4866-afc6-1110a0db5f4e",
                             Name = "Restaurant",
                             NormalizedName = "RESTAURANT"
                         });
@@ -662,7 +659,7 @@ namespace FoodEx.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FoodEx.Data.Entity.Address", b =>
+            modelBuilder.Entity("Address", b =>
                 {
                     b.HasOne("FoodEx.Entity.ApplicationUser", "User")
                         .WithMany("Addresses")
@@ -716,7 +713,7 @@ namespace FoodEx.Data.Migrations
 
             modelBuilder.Entity("FoodEx.Data.Entity.Order", b =>
                 {
-                    b.HasOne("FoodEx.Data.Entity.Address", "DeliveryAddress")
+                    b.HasOne("Address", "DeliveryAddress")
                         .WithMany()
                         .HasForeignKey("DeliveryAddressId")
                         .OnDelete(DeleteBehavior.Restrict);

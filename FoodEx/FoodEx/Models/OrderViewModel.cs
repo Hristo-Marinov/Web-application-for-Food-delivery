@@ -16,6 +16,7 @@ namespace FoodEx.Models
         public OrderStatus Status { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
+        public string? FullAddress { get; set; }
         public int? DeliveryAddressId { get; set; }
         public Address DeliveryAddress { get; set; }
         public ICollection<OrderItemViewModel> OrderItems { get; set; }

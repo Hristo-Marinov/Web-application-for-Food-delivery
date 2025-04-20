@@ -1,0 +1,58 @@
+﻿@model FoodEx.Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<link rel="stylesheet" href="~/css/checkout-map.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+<div class="checkout-wrapper">
+    <h2 class="title">Checkout</h2>
+
+    <form asp-action="ConfirmAddress" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="input-group">
+            <label class="input-label">Street Address</label>
+            <input asp-for="Street" class="input-field" id="streetInput" required />
+        </div>
+
+        <div class="map-container">
+            <div id="map" class="map-style"></div>
+        </div>
+
+        <button type="submit" class="confirm-button">Continue</button>
+    </form>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <script>
+        let map = L.map('map').setView([42.6977, 23.3219], 13); // Sofia by default
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let marker = L.marker([42.6977, 23.3219]).addTo(map);
+
+        const streetInput = document.querySelector('input[name="Street"]');
+        streetInput.addEventListener('input', function () {
+            const street = streetInput.value;
+            if (street.length > 4) {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(street)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            const lat = data[0].lat;
+                            const lon = data[0].lon;
+                            map.setView([lat, lon], 16);
+                            marker.setLatLng([lat, lon]);
+                        }
+                    });
+            }
+        });
+    </script>
+}

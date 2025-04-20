@@ -47,8 +47,8 @@ namespace FoodEx.Controllers
                 return Unauthorized("Your account is not verified by the admin yet.");
             }
 
-            var availableOrders = await _deliveryService.GetAvailableOrdersAsync();
-            var myOrders = await _deliveryService.GetMyOrdersAsync(user.Id);
+            var availableOrders = await _orderService.GetAvailableDeliveryOrdersAsync();
+            var myOrders = await _orderService.GetDeliveryOrdersAsync(user);
 
             var model = new DeliveryPanelViewModel
             {
@@ -85,7 +85,7 @@ namespace FoodEx.Controllers
         public async Task<IActionResult> ClaimOrder(int orderId)
         {
             var userId = _userManager.GetUserId(User);
-            var success = await _deliveryService.ClaimOrderAsync(orderId, userId);
+            var success = await _orderService.ClaimOrderAsync(orderId, userId);
             return RedirectToAction("DeliveryPanel");
         }
 

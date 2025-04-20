@@ -1,0 +1,62 @@
+﻿@model FoodEx.Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Confirm Address";
+}
+
+<link rel="stylesheet" href="~/css/checkout-map.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+<div class="checkout-wrapper">
+    <h2 class="title">Confirm Your Location</h2>
+
+    <form asp-action="Submit" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="input-group">
+            <label class="input-label">Street Address</label>
+            <input asp-for="Street" class="input-field" readonly />
+        </div>
+
+        <div class="map-container">
+            <div id="map" class="map-style"></div>
+        </div>
+
+        <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="confirmLocation" required />
+            <label class="form-check-label" for="confirmLocation">
+                I confirm this is the correct location.
+            </label>
+        </div>
+
+        <div class="button-group">
+            <a asp-action="Index" class="back-button">Back</a>
+            <button type="submit" class="confirm-button">Confirm & Place Order</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const map = L.map('map').setView([42.6977, 23.3219], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        let marker = L.marker([42.6977, 23.3219]).addTo(map);
+
+        const street = "@Model.Street";
+        if (street.length > 3) {
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${street}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data[0]) {
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+                        map.setView([lat, lon], 16);
+                        marker.setLatLng([lat, lon]);
+                    }
+                });
+        }
+    </script>
+}

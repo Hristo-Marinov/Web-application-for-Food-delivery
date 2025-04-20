@@ -104,4 +104,52 @@ public class CartService : ICartService
 
         return true;
     }
+
+    public async Task<bool> CheckoutAsync(string userId, CheckoutViewModel model)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        var cart = await _context.Carts
+            .Include(c => c.Items)
+            .ThenInclude(i => i.Food)
+            .FirstOrDefaultAsync(c => c.UserId == userId);
+
+        if (user == null || cart == null || !cart.Items.Any())
+            return false;
+
+        var address = new Address
+        {
+            UserId = userId,
+            Street = model.Street,
+            City = model.City,
+            Country = model.Country,
+            PostalCode = model.PostalCode
+        };
+        _context.Addresses.Add(address);
+        await _context.SaveChangesAsync();
+
+        var restaurantId = cart.Items.First().Food.RestaurantId;
+
+        var order = new Order
+        {
+            UserId = userId,
+            RestaurantId = restaurantId,
+            OrderDate = DateTime.UtcNow,
+            Status = OrderStatus.Pending,
+            DeliveryAddressId = address.AddressId,
+            TotalPrice = cart.Items.Sum(i => i.Food.Price * i.Quantity),
+            OrderItems = cart.Items.Select(ci => new OrderItem
+            {
+                FoodId = ci.FoodId,
+                Quantity = ci.Quantity,
+                UnitPrice = ci.Food.Price
+            }).ToList()
+        };
+
+        _context.Orders.Add(order);
+        _context.CartItems.RemoveRange(cart.Items);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
 }

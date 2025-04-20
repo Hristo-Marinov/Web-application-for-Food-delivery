@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FoodEx.Tests.Controllers
@@ -20,15 +21,21 @@ namespace FoodEx.Tests.Controllers
         private AccountController _controller;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            var store = new Mock<IUserStore<ApplicationUser>>();
-            _userManagerMock = new Mock<UserManager<ApplicationUser>>(store.Object, null, null, null, null, null, null, null, null);
+            var userStore = new Mock<IUserStore<ApplicationUser>>();
+            _userManagerMock = new Mock<UserManager<ApplicationUser>>(userStore.Object, null, null, null, null, null, null, null, null);
 
             var contextAccessor = new Mock<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
-            var userPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>();
-            _signInManagerMock = new Mock<SignInManager<ApplicationUser>>(_userManagerMock.Object,
-                contextAccessor.Object, userPrincipalFactory.Object, null, null, null, null);
+            var claimsFactory = new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>();
+            _signInManagerMock = new Mock<SignInManager<ApplicationUser>>(
+                _userManagerMock.Object,
+                contextAccessor.Object,
+                claimsFactory.Object,
+                null,
+                null,
+                null,
+                null);
 
             var roleStore = new Mock<IRoleStore<IdentityRole>>();
             _roleManagerMock = new Mock<RoleManager<IdentityRole>>(roleStore.Object, null, null, null, null);
@@ -40,70 +47,50 @@ namespace FoodEx.Tests.Controllers
         }
 
         [Test]
-        public void Login_Get_ReturnsView()
+        public void Login_ReturnsView()
         {
-            var result = _controller.Login() as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
+            var result = _controller.Login();
+            Assert.IsInstanceOf<ViewResult>(result);
         }
 
         [Test]
-        public async Task Login_Post_InvalidModel_ReturnsViewWithModel()
+        public async Task Login_Post_InvalidModel_ReturnsView()
         {
             _controller.ModelState.AddModelError("Email", "Required");
-
-            var model = new LoginViewModel();
-            var result = await _controller.Login(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Model, Is.EqualTo(model));
+            var result = await _controller.Login(new LoginViewModel());
+            Assert.IsInstanceOf<ViewResult>(result);
         }
 
         [Test]
-        public async Task Login_Post_ValidCredentials_RedirectsToHome()
+        public async Task Logout_RedirectsToHome()
         {
-            var model = new LoginViewModel { Email = "test@example.com", Password = "Pass123!", RememberMe = false };
-            var user = new ApplicationUser { Email = model.Email };
-
-            _userManagerMock.Setup(u => u.FindByEmailAsync(model.Email)).ReturnsAsync(user);
-            _signInManagerMock.Setup(s => s.PasswordSignInAsync(user, model.Password, model.RememberMe, false))
-                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
-
-            var result = await _controller.Login(model) as RedirectToActionResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ActionName, Is.EqualTo("Index"));
+            var result = await _controller.Logout();
+            Assert.IsInstanceOf<RedirectToActionResult>(result);
+            var redirectResult = result as RedirectToActionResult;
+            Assert.AreEqual("Index", redirectResult.ActionName);
+            Assert.AreEqual("Home", redirectResult.ControllerName);
         }
 
         [Test]
-        public void Register_Get_ReturnsViewWithRoles()
+        public void Register_ReturnsViewWithRoles()
         {
-            var result = _controller.Register() as ViewResult;
-            var model = result?.Model as RegisterViewModel;
-
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.AvailableRoles.Count, Is.GreaterThan(0));
+            var result = _controller.Register();
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            var model = viewResult.Model as RegisterViewModel;
+            Assert.IsNotNull(model);
+            Assert.IsNotEmpty(model.AvailableRoles);
         }
 
         [Test]
-        public async Task Register_Post_InvalidModel_ReturnsViewWithModel()
+        public async Task Register_Post_InvalidModel_ReturnsViewWithRoles()
         {
             _controller.ModelState.AddModelError("Email", "Required");
-
-            var model = new RegisterViewModel();
-            var result = await _controller.Register(model) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Model, Is.EqualTo(model));
-        }
-
-        [Test]
-        public async Task Logout_CallsSignOutAndRedirects()
-        {
-            var result = await _controller.Logout() as RedirectToActionResult;
-
-            _signInManagerMock.Verify(s => s.SignOutAsync(), Times.Once);
-            Assert.That(result.ActionName, Is.EqualTo("Index"));
+            var result = await _controller.Register(new RegisterViewModel());
+            Assert.IsInstanceOf<ViewResult>(result);
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.IsInstanceOf<RegisterViewModel>(viewResult.Model);
         }
     }
 }

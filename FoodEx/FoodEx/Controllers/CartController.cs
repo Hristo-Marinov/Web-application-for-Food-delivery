@@ -37,8 +37,6 @@ public class CartController : Controller
 
     public async Task<IActionResult> Checkout()
     {
-        var userId = _userManager.GetUserId(User);
-        var success = await _cartService.CheckoutAsync(userId);
-        return RedirectToAction("UserOrders", "Orders");
+        return RedirectToAction("Index", "Checkout");
     }
 }
