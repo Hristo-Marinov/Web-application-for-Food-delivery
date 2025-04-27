@@ -8,6 +8,7 @@ namespace FoodEx.Models
     {
         public List<Order> AvailableOrders { get; set; }
         public List<Order> MyOrders { get; set; }
+        public bool IsVerified { get; set; }
     }
 
 }

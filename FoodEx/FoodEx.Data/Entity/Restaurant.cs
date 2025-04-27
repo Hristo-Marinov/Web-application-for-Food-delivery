@@ -21,5 +21,6 @@ namespace FoodEx.Data.Entity
         public string Phone { get; set; }
         public ICollection<Food> Foods { get; set; }
         public ICollection<ApplicationUser> DeliveryGuys { get; set; }
+        public string? ImageURL { get; set; }
     }
 }

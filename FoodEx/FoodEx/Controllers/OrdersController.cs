@@ -42,19 +42,18 @@ namespace FoodEx.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (user.LockoutEnabled)
-            {
-                return Unauthorized("Your account is not verified by the admin yet.");
-            }
-
             var availableOrders = await _orderService.GetAvailableDeliveryOrdersAsync();
             var myOrders = await _orderService.GetDeliveryOrdersAsync(user);
 
             var model = new DeliveryPanelViewModel
             {
                 AvailableOrders = availableOrders,
-                MyOrders = myOrders
+                MyOrders = myOrders,
+                IsVerified = !user.LockoutEnabled
             };
+
+            ViewBag.IsVerified = !user.LockoutEnabled;
+
 
             return View("DeliveryPanel", model);
         }
@@ -88,6 +87,15 @@ namespace FoodEx.Controllers
             var success = await _orderService.ClaimOrderAsync(orderId, userId);
             return RedirectToAction("DeliveryPanel");
         }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> PreviousOrders()
+        {
+            var userId = _userManager.GetUserId(User);
+            var orders = await _orderService.GetUserDeliveredOrdersAsync(userId);
+            return View("PreviousOrders", orders);
+        }
+
 
         [Authorize(Roles = "Admin,Restaurant,DeliveryGuy")]
         public IActionResult StaffOverview()

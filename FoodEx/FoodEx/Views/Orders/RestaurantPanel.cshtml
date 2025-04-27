@@ -1,41 +1,60 @@
 ﻿@model IEnumerable<FoodEx.Data.Entity.Order>
 @using FoodEx.Data
+
 @{
     ViewData["Title"] = "Restaurant Panel";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="panel-wrapper">
+    <h2 class="panel-title">Restaurant Dashboard</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Update Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
+    <div class="order-section">
+        <h4 class="section-title">Incoming Orders</h4>
+
+        @if (Model.Any())
         {
-            <tr>
-                <td>@order.OrderId</td>
-                <td>@order.User?.UserName</td>
-                <td>@order.TotalPrice.ToString("C")</td>
-                <td>@order.Status</td>
-                <td>
-                    <form asp-action="UpdateOrderStatusByRestaurant" method="post">
-                        <input type="hidden" name="orderId" value="@order.OrderId" />
-                        <select name="status" class="form-select form-select-sm">
-                            <option value="StartPreparing">Start Preparing</option>
-                            <option value="Prepared">Prepared</option>
-                            <option value="HandedToDelivery">Handed To Delivery</option>
-                        </select>
-                        <button type="submit" class="btn btn-sm btn-primary mt-1">Update</button>
-                    </form>
-                </td>
-            </tr>
+            <div class="order-list">
+                @foreach (var order in Model)
+                {
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>Order #@order.OrderId</span>
+                            <span>Status: @order.Status</span>
+                        </div>
+
+                        <div class="order-address">
+                            <strong>Customer:</strong> @order.User?.UserName
+                        </div>
+
+                        <div class="order-address">
+                            <strong>Total:</strong> @order.TotalPrice лв
+                        </div>
+
+                        <div class="order-items">
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <div class="order-item">@item.Food.Name x @item.Quantity</div>
+                            }
+                        </div>
+
+                        <div class="order-actions">
+                            <form asp-action="UpdateOrderStatusByRestaurant" method="post">
+                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                <select name="status" class="order-select">
+                                    <option value="StartPreparing">Start Preparing</option>
+                                    <option value="Prepared">Prepared</option>
+                                    <option value="HandedToDelivery">Handed To Delivery</option>
+                                </select>
+                                <button type="submit" class="btn btn-order">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
         }
-    </tbody>
-</table>
+        else
+        {
+            <p>No orders at this time.</p>
+        }
+    </div>
+</div>

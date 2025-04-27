@@ -1,7 +1,10 @@
 ﻿using FoodEx.Controllers;
+using FoodEx.Data.Entity;
 using FoodEx.Data.Entity.Context;
 using FoodEx.Entity;
+using FoodEx.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -15,83 +18,101 @@ namespace FoodEx.Tests.Controllers
     [TestFixture]
     public class AdminControllerTests
     {
-        private Mock<UserManager<ApplicationUser>> _userManagerMock;
-        private Mock<RoleManager<IdentityRole>> _roleManagerMock;
         private ApplicationDbContext _context;
         private AdminController _controller;
+        private UserManager<ApplicationUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
+        private AdminService _adminService;
 
         [SetUp]
         public void Setup()
         {
-            var userStore = new Mock<IUserStore<ApplicationUser>>();
-            _userManagerMock = new Mock<UserManager<ApplicationUser>>(
-                userStore.Object, null, null, null, null, null, null, null, null
-            );
-
-            var roleStore = new Mock<IRoleStore<IdentityRole>>();
-            _roleManagerMock = new Mock<RoleManager<IdentityRole>>(
-                roleStore.Object, null, null, null, null
-            );
-
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "AdminControllerTestsDb")
+                .UseInMemoryDatabase(databaseName: "AdminControllerTestDb")
                 .Options;
+
             _context = new ApplicationDbContext(options);
 
-            _controller = new AdminController(_userManagerMock.Object, _roleManagerMock.Object, _context);
+            var userStore = new UserStore<ApplicationUser>(_context);
+            _userManager = new UserManager<ApplicationUser>(
+                userStore, null, new PasswordHasher<ApplicationUser>(),
+                new List<IUserValidator<ApplicationUser>>(), new List<IPasswordValidator<ApplicationUser>>(),
+                new UpperInvariantLookupNormalizer(), new IdentityErrorDescriber(), null, null);
+
+            var roleStore = new RoleStore<IdentityRole>(_context);
+            _roleManager = new RoleManager<IdentityRole>(
+                roleStore, new List<IRoleValidator<IdentityRole>>(), new UpperInvariantLookupNormalizer(), new IdentityErrorDescriber(), null);
+
+            _adminService = new AdminService(_context);
+
+            _controller = new AdminController(_userManager, _roleManager, _context, _adminService);
         }
 
         [TearDown]
-        public void Cleanup()
+        public void TearDown()
         {
             _context.Database.EnsureDeleted();
             _context.Dispose();
         }
 
-        
-
         [Test]
-        public async Task ToggleVerification_FlipsLockoutEnabled_AndRedirects()
+        public async Task AdminPanel_ReturnsViewResult_WithUserRoles()
         {
-            var user = new ApplicationUser { Id = "1", LockoutEnabled = true };
-            _userManagerMock.Setup(m => m.FindByIdAsync("1")).ReturnsAsync(user);
-            _userManagerMock.Setup(m => m.UpdateAsync(user)).ReturnsAsync(IdentityResult.Success);
+            // Arrange
+            var adminRole = new IdentityRole("Admin");
+            await _roleManager.CreateAsync(adminRole);
 
-            var result = await _controller.ToggleVerification("1") as RedirectToActionResult;
+            var user = new ApplicationUser { UserName = "adminuser", Email = "admin@example.com" };
+            await _userManager.CreateAsync(user, "Admin123!");
+            await _userManager.AddToRoleAsync(user, "Admin");
 
-            Assert.That(user.LockoutEnabled, Is.False);
-            Assert.That(result.ActionName, Is.EqualTo("AdminPanel"));
+            // Act
+            var result = await _controller.AdminPanel();
+
+            // Assert
+            Assert.IsInstanceOf<ViewResult>(result);
+            var model = ((ViewResult)result).Model as List<(ApplicationUser User, string Role)>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(1, model.Count);
+            Assert.AreEqual("Admin", model.First().Role);
         }
 
         [Test]
-        public async Task UpdateOrderStatus_ChangesStatus_AndRedirects()
+        public async Task DeleteRating_RatingExists_DeletesRating()
         {
-            var order = new FoodEx.Data.Entity.Order
+            // Arrange
+            var user = new ApplicationUser { UserName = "testuser", Email = "test@example.com" };
+            await _userManager.CreateAsync(user, "Test123!");
+
+            var food = new Food
             {
-                OrderId = 1,
-                Status = FoodEx.Data.OrderStatus.Pending
+                Name = "Pizza",
+                Category = "Italian",
+                Description = "Delicious pizza",
+                Price = 12.5m,
+                ImageUrl = "pizza.jpg",
+                RestaurantId = 1
             };
-            _context.Orders.Add(order);
+            await _context.Foods.AddAsync(food);
             await _context.SaveChangesAsync();
 
-            var result = await _controller.UpdateOrderStatus(1, FoodEx.Data.OrderStatus.Delivered) as RedirectToActionResult;
+            var rating = new Rating
+            {
+                FoodId = food.FoodId,
+                UserId = user.Id,
+                RatingValue = 5,
+                Comment = "Amazing!"
+            };
+            await _context.Ratings.AddAsync(rating);
+            await _context.SaveChangesAsync();
 
-            var updatedOrder = await _context.Orders.FindAsync(1);
-            Assert.That(updatedOrder.Status, Is.EqualTo(FoodEx.Data.OrderStatus.Delivered));
-            Assert.That(result.ActionName, Is.EqualTo("AdminPanel"));
-        }
-    }
+            // Act
+            var result = await _controller.DeleteRating(rating.RatingId);
 
-    public static class TestHelpers
-    {
-        public static Mock<DbSet<T>> BuildMockDbSet<T>(this IQueryable<T> source) where T : class
-        {
-            var mockSet = new Mock<DbSet<T>>();
-            mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(source.Provider);
-            mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(source.Expression);
-            mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(source.ElementType);
-            mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(source.GetEnumerator());
-            return mockSet;
+            // Assert
+            Assert.IsInstanceOf<RedirectToActionResult>(result);
+            var ratingInDb = await _context.Ratings.FindAsync(rating.RatingId);
+            Assert.IsNull(ratingInDb);
         }
     }
 }

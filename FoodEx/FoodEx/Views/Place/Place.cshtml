@@ -21,7 +21,7 @@
                 <div class="restaurant-card position-relative shadow-sm bg-white rounded overflow-hidden h-100">
                     <a asp-controller="Place" asp-action="PlaceDetails" asp-route-id="@restaurant.RestaurantId" class="text-decoration-none text-dark">
                         <div class="img-wrapper">
-                            <img src="https://images.immediate.co.uk/production/volatile/sites/30/2013/05/spaghetti-carbonara-382837d.jpg?resize=768,574"
+                            <img src="@restaurant.ImageURL"
                                  alt="@restaurant.Name" class="img-fluid w-100" />
                         </div>
                         <div class="overlay">

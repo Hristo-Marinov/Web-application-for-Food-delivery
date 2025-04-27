@@ -23,19 +23,26 @@ namespace FoodEx.Tests.Controllers
         public void Setup()
         {
             _cartServiceMock = new Mock<ICartService>();
-            var userStore = new Mock<IUserStore<ApplicationUser>>();
-            _userManagerMock = new Mock<UserManager<ApplicationUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+
+            var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
+            _userManagerMock = new Mock<UserManager<ApplicationUser>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
 
             _controller = new CartController(_cartServiceMock.Object, _userManagerMock.Object);
+        }
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        private void SetupUser(string userId)
+        {
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.NameIdentifier, "user123")
+                new Claim(ClaimTypes.NameIdentifier, userId)
             }, "mock"));
+
             _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext { User = user }
             };
+
+            _userManagerMock.Setup(x => x.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
         }
 
         [Test]
@@ -54,33 +61,36 @@ namespace FoodEx.Tests.Controllers
         [Test]
         public async Task AddToCart_RedirectsToIndex()
         {
-            _userManagerMock.Setup(u => u.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns("user123");
+            SetupUser("user1");
 
-            var result = await _controller.AddToCart(1) as RedirectToActionResult;
+            var result = await _controller.AddToCart(1);
 
-            _cartServiceMock.Verify(s => s.AddToCartAsync("user123", 1), Times.Once);
-            Assert.That(result.ActionName, Is.EqualTo("Index"));
+            _cartServiceMock.Verify(x => x.AddToCartAsync("user1", 1), Times.Once);
+            Assert.IsInstanceOf<RedirectToActionResult>(result);
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.AreEqual("Index", redirectResult.ActionName);
         }
 
         [Test]
         public async Task RemoveFromCart_RedirectsToIndex()
         {
-            var result = await _controller.RemoveFromCart(10) as RedirectToActionResult;
+            var result = await _controller.RemoveFromCart(1);
 
-            _cartServiceMock.Verify(s => s.RemoveFromCartAsync(10), Times.Once);
-            Assert.That(result.ActionName, Is.EqualTo("Index"));
+            _cartServiceMock.Verify(x => x.RemoveFromCartAsync(1), Times.Once);
+            Assert.IsInstanceOf<RedirectToActionResult>(result);
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.AreEqual("Index", redirectResult.ActionName);
         }
 
         [Test]
-        public async Task Checkout_RedirectsToUserOrders()
+        public async Task Checkout_RedirectsToCheckoutIndex()
         {
-            _userManagerMock.Setup(u => u.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns("user123");
-            _cartServiceMock.Setup(s => s.CheckoutAsync("user123")).ReturnsAsync(true);
+            var result = await _controller.Checkout();
 
-            var result = await _controller.Checkout() as RedirectToActionResult;
-
-            Assert.That(result.ControllerName, Is.EqualTo("Orders"));
-            Assert.That(result.ActionName, Is.EqualTo("UserOrders"));
+            Assert.IsInstanceOf<RedirectToActionResult>(result);
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.AreEqual("Index", redirectResult.ActionName);
+            Assert.AreEqual("Checkout", redirectResult.ControllerName);
         }
     }
 }

@@ -37,6 +37,7 @@ namespace FoodEx.Services
             return await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
+                .Where(o => o.Status != OrderStatus.HandedToDelivery && o.Status != OrderStatus.Delivered)
                 .Where(o => o.RestaurantId == restaurant.RestaurantId)
                 .ToListAsync();
         }
@@ -47,7 +48,7 @@ namespace FoodEx.Services
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.DeliveryAddress)
-                .Where(o => o.DeliveryGuyId == deliveryUser.Id)
+                .Where(o => o.DeliveryGuyId == deliveryUser.Id && o.Status != OrderStatus.Delivered)
                 .ToListAsync();
         }
 
@@ -110,12 +111,6 @@ namespace FoodEx.Services
 
             order.Status = status;
 
-            if (status == OrderStatus.Delivered)
-            {
-                _context.OrderItems.RemoveRange(order.OrderItems);
-                _context.Orders.Remove(order);
-            }
-
             await _context.SaveChangesAsync();
             return true;
         }
@@ -134,6 +129,15 @@ namespace FoodEx.Services
                         ? o.DeliveryAddress.Street
                         : null
                 })
+                .ToListAsync();
+        }
+        public async Task<List<Order>> GetUserDeliveredOrdersAsync(string userId)
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Food)
+                .Include(o => o.DeliveryAddress)
+                .Where(o => o.UserId == userId && o.Status == OrderStatus.Delivered)
                 .ToListAsync();
         }
     }

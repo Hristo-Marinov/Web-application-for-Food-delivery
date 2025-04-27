@@ -2,32 +2,50 @@
 
 @{
     ViewData["Title"] = "Create Restaurant";
+    var isVerified = ViewBag.IsVerified;
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="CreateRestaurant" method="post">
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+@if (!isVerified)
+{
+    <div class="alert alert-warning text-center p-5 mt-5 rounded-4 shadow-sm" style="background-color: #fff3cd; border: 1px solid #ffeeba;">
+        <h4 class="mb-3">Your account is not verified yet</h4>
+        <p class="mb-0">Please wait for an administrator to verify your account before creating a restaurant.</p>
     </div>
+}
+else
+{
+    <form asp-action="CreateRestaurant" method="post">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
 
-    <div class="mb-3">
-        <label asp-for="Location" class="form-label"></label>
-        <input asp-for="Location" class="form-control" />
-        <span asp-validation-for="Location" class="text-danger"></span>
-    </div>
+        <div class="mb-3">
+            <label asp-for="Location" class="form-label"></label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
 
-    <div class="mb-3">
-        <label asp-for="Phone" class="form-label"></label>
-        <input asp-for="Phone" class="form-control" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
-    </div>
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
+        <div class="mb-3">
+            <label for="ImageUrl" class="form-label">Restaurant Image</label>
+            <input asp-for="ImageURL" class="form-control" placeholder="Paste image URL or upload later" />
+            <span asp-validation-for="ImageURL" class="text-danger"></span>
+        </div>
 
-@section Scripts {
+
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+
+    @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    }
 }

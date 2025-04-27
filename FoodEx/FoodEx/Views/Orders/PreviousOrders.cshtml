@@ -1,0 +1,39 @@
+﻿@model IEnumerable<FoodEx.Data.Entity.Order>
+@using FoodEx.Data
+@{
+    ViewData["Title"] = "Previous Orders";
+}
+
+<div class="orders-wrapper">
+    <h2 class="orders-title">Previous Orders</h2>
+
+    <div class="orders-list">
+        @foreach (var order in Model)
+        {
+            <div class="order-card">
+                <div class="order-header">
+                    <span class="order-id">Order #@order.OrderId</span>
+                    <span class="order-status delivered">Delivered</span>
+                </div>
+                <div class="order-route">
+                    <span>@order.DeliveryAddress?.Street</span>
+                    <span class="route-dots">...</span>
+                    <span>@order.DeliveryAddress?.City</span>
+                </div>
+                <div class="order-items">
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <div class="item">
+                            <div class="item-name">@item.Food.Name</div>
+                            <div class="item-details">x @item.Quantity</div>
+                        </div>
+                    }
+                </div>
+                <div class="order-footer">
+                    <div class="total-price">Total: @order.TotalPrice лв</div>
+                    <a href="#" class="details-button">Details</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

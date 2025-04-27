@@ -37,11 +37,7 @@ namespace FoodEx.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (user == null || user.LockoutEnabled)
-            {
-                ModelState.AddModelError("", "Your account is not verified to create a restaurant.");
-                return View(model);
-            }
+            ViewBag.IsVerified = !user.LockoutEnabled;
 
             model.OwnerUserId = user.Id;
 

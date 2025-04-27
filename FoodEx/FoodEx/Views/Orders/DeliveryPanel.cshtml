@@ -1,42 +1,51 @@
 ﻿@model FoodEx.Models.DeliveryPanelViewModel
-
 @{
     ViewData["Title"] = "Delivery Panel";
 }
-
-<!-- Leaflet CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<div class="container mt-4">
-    <h2 class="mb-4">Delivery Dashboard</h2>
+<div class="panel-wrapper">
+    <h2 class="panel-title">Delivery Dashboard</h2>
 
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Available Orders</h4>
+    @if (!Model.IsVerified)
+    {
+        <div class="alert alert-warning text-center p-5 mt-5 rounded-4 shadow-sm" style="background-color: #fff3cd; border: 1px solid #ffeeba;">
+            <h4 class="mb-3">Your account is not verified yet</h4>
+            <p class="mb-0">Please wait for an administrator to approve your account before accepting deliveries.</p>
+        </div>
+    }
+    else
+    {
+        <div class="order-section">
+            <h4 class="section-title">Available Orders</h4>
             @if (Model.AvailableOrders.Any())
             {
-                <ul class="list-group">
+                <div class="order-list">
                     @foreach (var order in Model.AvailableOrders)
                     {
                         var mapId = "map-available-" + order.OrderId;
-                        <li class="list-group-item">
-                            <div>
-                                <strong>Order #@order.OrderId</strong><br />
-                                <small><strong>Street:</strong> @order.DeliveryAddress?.Street</small><br />
+                        <div class="order-card animate__animated animate__fadeInUp">
+                            <div class="order-card-header">
+                                <span>Order #@order.OrderId</span>
+                            </div>
+                            <div class="order-address">
+                                <strong>Street:</strong> @order.DeliveryAddress?.Street
+                            </div>
+                            <div class="order-items">
                                 @foreach (var item in order.OrderItems)
                                 {
-                                    <div>@item.Food.Name x @item.Quantity</div>
+                                    <div class="order-item">@item.Food.Name x @item.Quantity</div>
                                 }
-
-                                <div id="@mapId" style="height: 200px;" class="my-2 rounded border"></div>
-
+                            </div>
+                            <div id="@mapId" class="order-map skeleton"></div>
+                            <div class="order-actions">
                                 <form asp-action="ClaimOrder" method="post">
                                     <input type="hidden" name="orderId" value="@order.OrderId" />
-                                    <button type="submit" class="btn btn-primary btn-sm">Claim</button>
+                                    <button type="submit" class="btn btn-claim">Claim</button>
                                 </form>
                             </div>
-                        </li>
+                        </div>
                         <script>
                             fetch(`https://nominatim.openstreetmap.org/search?format=json&q=@order.DeliveryAddress?.Street`)
                                 .then(res => res.json())
@@ -48,47 +57,53 @@
                                         }).addTo(map);
                                         L.marker([data[0].lat, data[0].lon]).addTo(map)
                                             .bindPopup('@order.DeliveryAddress?.Street').openPopup();
+                                        document.getElementById('@mapId').classList.remove('skeleton');
                                     }
                                 });
                         </script>
                     }
-                </ul>
+                </div>
             }
             else
             {
-                <p>No available orders.</p>
+                <p class="text-center mt-4 text-muted">No available orders right now.</p>
             }
         </div>
 
-        <div class="col-md-6">
-            <h4>My Orders</h4>
+        <div class="order-section">
+            <h4 class="section-title">My Orders</h4>
             @if (Model.MyOrders.Any())
             {
-                <ul class="list-group">
+                <div class="order-list">
                     @foreach (var order in Model.MyOrders)
                     {
                         var mapId = "map-my-" + order.OrderId;
-                        <li class="list-group-item">
-                            <div>
-                                <strong>Order #@order.OrderId</strong> - Status: @order.Status<br />
-                                <small><strong>Street:</strong> @order.DeliveryAddress?.Street</small><br />
+                        <div class="order-card animate__animated animate__fadeInUp">
+                            <div class="order-card-header">
+                                <span>Order #@order.OrderId</span>
+                                <span>Status: <strong>@order.Status</strong></span>
+                            </div>
+                            <div class="order-address">
+                                <strong>Street:</strong> @order.DeliveryAddress?.Street
+                            </div>
+                            <div class="order-items">
                                 @foreach (var item in order.OrderItems)
                                 {
-                                    <div>@item.Food.Name x @item.Quantity</div>
+                                    <div class="order-item">@item.Food.Name x @item.Quantity</div>
                                 }
-
-                                <div id="@mapId" style="height: 200px;" class="my-2 rounded border"></div>
-
-                                <form asp-action="UpdateOrderStatusByDelivery" method="post" class="mt-2 d-flex gap-2 align-items-center">
+                            </div>
+                            <div id="@mapId" class="order-map skeleton"></div>
+                            <div class="order-actions">
+                                <form asp-action="UpdateOrderStatusByDelivery" method="post" class="d-flex gap-2 align-items-center mt-2">
                                     <input type="hidden" name="orderId" value="@order.OrderId" />
-                                    <select name="status" class="form-select form-select-sm w-auto">
+                                    <select name="status" class="order-select">
                                         <option value="OutForDelivery">Out For Delivery</option>
                                         <option value="Delivered">Delivered</option>
                                     </select>
-                                    <button type="submit" class="btn btn-success btn-sm">Update</button>
+                                    <button type="submit" class="btn btn-order">Update</button>
                                 </form>
                             </div>
-                        </li>
+                        </div>
                         <script>
                             fetch(`https://nominatim.openstreetmap.org/search?format=json&q=@order.DeliveryAddress?.Street`)
                                 .then(res => res.json())
@@ -100,16 +115,18 @@
                                         }).addTo(map);
                                         L.marker([data[0].lat, data[0].lon]).addTo(map)
                                             .bindPopup('@order.DeliveryAddress?.Street').openPopup();
+                                        document.getElementById('@mapId').classList.remove('skeleton');
                                     }
                                 });
                         </script>
                     }
-                </ul>
+                </div>
             }
             else
             {
-                <p>You have no assigned orders.</p>
+                <p class="text-center mt-4 text-muted">You have no assigned orders yet.</p>
             }
         </div>
-    </div>
+    }
 </div>
+

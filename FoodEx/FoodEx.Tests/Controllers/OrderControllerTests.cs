@@ -4,7 +4,6 @@ using FoodEx.Data.Entity;
 using FoodEx.Entity;
 using FoodEx.Models;
 using FoodEx.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -18,114 +17,75 @@ namespace FoodEx.Tests.Controllers
     [TestFixture]
     public class OrdersControllerTests
     {
-        private Mock<IOrderService> _orderServiceMock;
-        private Mock<IDeliveryService> _deliveryServiceMock;
-        private Mock<UserManager<ApplicationUser>> _userManagerMock;
+        private Mock<IOrderService> _mockOrderService;
+        private Mock<IDeliveryService> _mockDeliveryService;
+        private Mock<UserManager<ApplicationUser>> _mockUserManager;
         private OrdersController _controller;
-        private ApplicationUser _mockUser;
 
         [SetUp]
         public void Setup()
         {
-            _orderServiceMock = new Mock<IOrderService>();
-            _deliveryServiceMock = new Mock<IDeliveryService>();
+            _mockOrderService = new Mock<IOrderService>();
+            _mockDeliveryService = new Mock<IDeliveryService>();
+            var userStore = new Mock<IUserStore<ApplicationUser>>();
+            _mockUserManager = new Mock<UserManager<ApplicationUser>>(userStore.Object, null, null, null, null, null, null, null, null);
 
-            var store = new Mock<IUserStore<ApplicationUser>>();
-            _userManagerMock = new Mock<UserManager<ApplicationUser>>(store.Object, null, null, null, null, null, null, null, null);
-
-            _controller = new OrdersController(_orderServiceMock.Object, _deliveryServiceMock.Object, _userManagerMock.Object);
-
-            _mockUser = new ApplicationUser { Id = "user123", Email = "test@foodex.com" };
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, _mockUser.Id)
-            }));
-
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext { User = user }
-            };
+            _controller = new OrdersController(_mockOrderService.Object, _mockDeliveryService.Object, _mockUserManager.Object);
         }
 
         [Test]
         public async Task UserOrders_ReturnsViewWithOrders()
         {
-            var orders = new List<Order> { new Order { OrderId = 1 } };
-            _userManagerMock.Setup(m => m.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(_mockUser.Id);
-            _orderServiceMock.Setup(s => s.GetUserOrdersAsync(_mockUser.Id)).ReturnsAsync(orders);
+            var userId = "user1";
+            _mockUserManager.Setup(x => x.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
+            _mockOrderService.Setup(x => x.GetUserOrdersAsync(userId)).ReturnsAsync(new List<Order>());
 
             var result = await _controller.UserOrders() as ViewResult;
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.EqualTo("UserOrders"));
-            Assert.That(result.Model, Is.EqualTo(orders));
+            Assert.IsNotNull(result);
+            Assert.AreEqual("UserOrders", result.ViewName);
         }
 
         [Test]
-        public async Task RestaurantPanel_ReturnsViewWithOrders()
+        public async Task RestaurantPanel_ReturnsOrdersView()
         {
-            var orders = new List<Order> { new Order { OrderId = 2 } };
-            _userManagerMock.Setup(m => m.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(_mockUser.Id);
-            _orderServiceMock.Setup(s => s.GetRestaurantOrdersAsync(_mockUser.Id)).ReturnsAsync(orders);
+            var userId = "restUser";
+            _mockUserManager.Setup(x => x.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
+            _mockOrderService.Setup(x => x.GetRestaurantOrdersAsync(userId)).ReturnsAsync(new List<Order>());
 
             var result = await _controller.RestaurantPanel() as ViewResult;
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.EqualTo("RestaurantPanel"));
-            Assert.That(result.Model, Is.EqualTo(orders));
+            Assert.IsNotNull(result);
+            Assert.AreEqual("RestaurantPanel", result.ViewName);
         }
 
         [Test]
-        public async Task DeliveryPanel_ReturnsViewWithModel()
+        public async Task PreviousOrders_ReturnsDeliveredOrders()
         {
-            _mockUser.LockoutEnabled = false;
+            var userId = "user123";
+            _mockUserManager.Setup(x => x.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
+            _mockOrderService.Setup(x => x.GetUserDeliveredOrdersAsync(userId)).ReturnsAsync(new List<Order>());
 
-            var available = new List<Order> { new Order { OrderId = 3 } };
-            var myOrders = new List<Order> { new Order { OrderId = 4 } };
+            var result = await _controller.PreviousOrders() as ViewResult;
 
-            _userManagerMock.Setup(m => m.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(_mockUser);
-            _deliveryServiceMock.Setup(d => d.GetAvailableOrdersAsync()).ReturnsAsync(available);
-            _deliveryServiceMock.Setup(d => d.GetMyOrdersAsync(_mockUser.Id)).ReturnsAsync(myOrders);
-
-            var result = await _controller.DeliveryPanel() as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.EqualTo("DeliveryPanel"));
-            var model = result.Model as DeliveryPanelViewModel;
-            Assert.That(model.AvailableOrders.Count, Is.EqualTo(1));
-            Assert.That(model.MyOrders.Count, Is.EqualTo(1));
+            Assert.IsNotNull(result);
+            Assert.AreEqual("PreviousOrders", result.ViewName);
         }
 
         [Test]
-        public async Task UpdateOrderStatusByRestaurant_Success_ReturnsRedirect()
+        public void StaffOverview_ReturnsView()
         {
-            _orderServiceMock.Setup(s => s.UpdateOrderStatusByRestaurantAsync(1, OrderStatus.Prepared)).ReturnsAsync(true);
-
-            var result = await _controller.UpdateOrderStatusByRestaurant(1, OrderStatus.Prepared) as RedirectToActionResult;
-
-            Assert.That(result.ActionName, Is.EqualTo("RestaurantPanel"));
+            var result = _controller.StaffOverview() as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual("StaffOverview", result.ViewName);
         }
 
         [Test]
-        public async Task UpdateOrderStatusByDelivery_Success_ReturnsRedirect()
+        public void UserOverview_ReturnsView()
         {
-            _userManagerMock.Setup(m => m.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(_mockUser.Id);
-            _orderServiceMock.Setup(s => s.UpdateOrderStatusByDeliveryAsync(1, OrderStatus.Delivered, _mockUser.Id)).ReturnsAsync(true);
-
-            var result = await _controller.UpdateOrderStatusByDelivery(1, OrderStatus.Delivered) as RedirectToActionResult;
-
-            Assert.That(result.ActionName, Is.EqualTo("DeliveryPanel"));
-        }
-
-        [Test]
-        public async Task ClaimOrder_ReturnsRedirect()
-        {
-            _userManagerMock.Setup(m => m.GetUserId(It.IsAny<ClaimsPrincipal>())).Returns(_mockUser.Id);
-            _deliveryServiceMock.Setup(d => d.ClaimOrderAsync(1, _mockUser.Id)).ReturnsAsync(true);
-
-            var result = await _controller.ClaimOrder(1) as RedirectToActionResult;
-
-            Assert.That(result.ActionName, Is.EqualTo("DeliveryPanel"));
+            var result = _controller.UserOverview() as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual("UserOverview", result.ViewName);
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FoodEx.Data.Migrations
 {
-    public partial class AddressFix : Migration
+    public partial class Test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -376,10 +376,10 @@ namespace FoodEx.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1", "b4c83b97-269d-47a4-995d-006cbd637bf6", "Admin", "ADMIN" },
-                    { "2", "1f848bb8-667f-4a91-aa13-393a47f67b6b", "User", "USER" },
-                    { "3", "c94ecd15-c832-4e54-8bc7-31dfd7ef5933", "DeliveryGuy", "DELIVERYGUY" },
-                    { "4", "8a146ba4-809a-4866-afc6-1110a0db5f4e", "Restaurant", "RESTAURANT" }
+                    { "1", "d015e9f4-a0d7-4649-9de3-44858ed5660b", "Admin", "ADMIN" },
+                    { "2", "fd779c85-7335-41a9-be6e-089b25d8dfd6", "User", "USER" },
+                    { "3", "c7333c78-3eed-41b2-9d3e-e0fd3d0bff9c", "DeliveryGuy", "DELIVERYGUY" },
+                    { "4", "0c441d26-11f5-447b-aa4f-8e690cea2907", "Restaurant", "RESTAURANT" }
                 });
 
             migrationBuilder.InsertData(
@@ -387,10 +387,10 @@ namespace FoodEx.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RestaurantId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "admin-user-id", 0, "347e66ea-0fe1-465d-8191-1897873c8b07", "admin@foodex.com", true, false, null, "ADMIN@FOODEX.COM", "ADMIN", "AQAAAAEAACcQAAAAEFk5Ocw+2u6tuhSP/f5bkLqzsTJBLUTQqQPRU1nBCHd5WUae3PtzCthoZ2PtagdaYw==", null, false, null, "f5f9176a-a7c9-431b-884f-5ee98cbfaad5", false, "admin" },
-                    { "deliveryguy-user-id", 0, "2548919a-7073-477f-929e-6c2c0a898a52", "deliveryguy@foodex.com", true, false, null, "DELIVERYGUY@FOODEX.COM", "DELIVERYGUY", "AQAAAAEAACcQAAAAEI0GnCfCq5ZTtR6fmiv/nEUtEAmshXV4XDF58AZrd5lzJMGf9pAbIkJmYLzbkK7PPw==", null, false, null, "18ba1383-9cd3-4c04-b1bd-87abc80ff3e5", false, "deliveryguy" },
-                    { "regular-user-id", 0, "15b31b02-dc25-4608-ab88-5ac8d996df5f", "user@foodex.com", true, false, null, "USER@FOODEX.COM", "USER", "AQAAAAEAACcQAAAAEFuHE6gjq/TViYsXLfp1IdmlcmGaV8CMCyQ9RfwYx2OPGNpusMi69B7sns4dQ6NxQw==", null, false, null, "5cc77270-3a40-4fb0-86c2-4c2ba8b09e85", false, "user" },
-                    { "restaurant-user-id", 0, "f6d3194e-83f5-44b9-a2b2-4b56f296e533", "restaurantowner@foodex.com", true, false, null, "RESTAURANTOWNER@FOODEX.COM", "RESTAURANTOWNER", "AQAAAAEAACcQAAAAEKrvnckmpQrhG5iovtdsxqMHgROg36tqiMFM2l06qx42q/HZwSIsaPHswfl/LNtmWw==", null, false, null, "afcf41e8-d5d1-48cf-97e7-e6d13f341ca2", false, "restaurantowner" }
+                    { "admin-user-id", 0, "be9e5892-d815-4a55-8261-ff16fb30f45c", "admin@foodex.com", true, false, null, "ADMIN@FOODEX.COM", "ADMIN", "AQAAAAEAACcQAAAAEDvu9iG3MmFjjcBnrWIcXG9I4pgF+Oopp8VzGopn2iVTBopeSdgPlUkUhJDx109NHg==", null, false, null, "00e19e65-0cdb-41ca-993c-4da4c2e83738", false, "admin" },
+                    { "deliveryguy-user-id", 0, "a2635668-1c81-4b58-b692-459e46cfaee0", "deliveryguy@foodex.com", true, false, null, "DELIVERYGUY@FOODEX.COM", "DELIVERYGUY", "AQAAAAEAACcQAAAAEEkNmrbu34ZjagEaitXn7BUp1mUS+6K1pdnLLW4r8vqw8UaCXNqhujNpTE9BRmcNug==", null, false, null, "8296c983-ae6a-4af2-9594-b90c3b1664e9", false, "deliveryguy" },
+                    { "regular-user-id", 0, "9f38dee3-df99-485d-8673-c9d3f4a58123", "user@foodex.com", true, false, null, "USER@FOODEX.COM", "USER", "AQAAAAEAACcQAAAAEOzC32TRGix1X/plzGc86qMBFX/nZe8kfC0/nS/6ZBDeSAK1pm8g2opyzfSL2UzIrA==", null, false, null, "795e6be1-d5f4-424e-a235-9a28579a8dd8", false, "user" },
+                    { "restaurant-user-id", 0, "fe9e5e34-4619-4b2e-ae7c-1db28c8b9aee", "restaurantowner@foodex.com", true, false, null, "RESTAURANTOWNER@FOODEX.COM", "RESTAURANTOWNER", "AQAAAAEAACcQAAAAEJrMIE5z8Cj8yiucyhurYWqNTWjuv9MMjvTjtA/f6biduIkDlAkYatxtlo2od6ljxQ==", null, false, null, "ace0dd3b-ee3a-4505-a09d-505b3dbc15cb", false, "restaurantowner" }
                 });
 
             migrationBuilder.InsertData(

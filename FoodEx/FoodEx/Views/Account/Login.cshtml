@@ -14,7 +14,7 @@
     <div class="auth-form login">
         <h2>Sign in</h2>
 
-        @await Html.PartialAsync("_ValidationSummary")
+        @await Html.PartialAsync("_ValidationSummary - Copy")
 
         <form asp-action="Login" method="post">
             <div class="input-group">
@@ -24,7 +24,6 @@
                 <input asp-for="Password" type="password" placeholder="Password" />
             </div>
             <div class="form-footer">
-                <a href="#">Forgot your password?</a>
                 <button type="submit" class="btn-auth">Sign In</button>
             </div>
             <div class="text-center mt-3">

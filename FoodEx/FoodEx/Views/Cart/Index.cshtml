@@ -37,9 +37,9 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="fw-bold">@item.Price.ToString("C")</td>
+                                <td class="fw-bold">@item.Price лв</td>
                                 <td>@item.Quantity</td>
-                                <td class="fw-bold">@item.Total.ToString("C")</td>
+                                <td class="fw-bold">@item.Total</td>
                                 <td>
                                     <form asp-action="RemoveFromCart" asp-route-cartItemId="@item.CartItemId" method="post">
                                         <button class="btn btn-sm btn-outline-danger">Remove</button>
@@ -57,19 +57,11 @@
                     <h5>Summary</h5>
                     <div class="d-flex justify-content-between border-bottom py-2">
                         <span>Subtotal</span>
-                        <span>@Model.TotalPrice.ToString("C")</span>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom py-2">
-                        <span>Shipping</span>
-                        <span>TBD</span>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom py-2">
-                        <span>Tax</span>
-                        <span>TBD</span>
+                        <span>@Model.TotalPrice лв</span>
                     </div>
                     <div class="d-flex justify-content-between fw-bold py-2">
                         <span>Total</span>
-                        <span>@Model.TotalPrice.ToString("C")</span>
+                        <span>@Model.TotalPrice лв</span>
                     </div>
 
                     <form asp-action="Checkout" method="post">
