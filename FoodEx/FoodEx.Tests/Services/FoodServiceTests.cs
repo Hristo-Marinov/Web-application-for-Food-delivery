@@ -1,5 +1,4 @@
-﻿using FoodEx.Data.Entity.Context;
-using FoodEx.Data.Entity;
+﻿using FoodEx.Data.Entity;
 using FoodEx.Entity;
 using FoodEx.Models;
 using FoodEx.Services;
@@ -8,6 +7,7 @@ using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using FoodEx.Data.Context;
 
 namespace FoodEx.Tests.Services
 {

@@ -2,8 +2,8 @@ using FoodEx.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FoodEx.Services;
-using FoodEx.Data.Entity.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using FoodEx.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ Console.WriteLine($"Using Connection String: {connectionString}");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, sqlOptions =>
-        sqlOptions.MigrationsAssembly("FoodEx.Data")));
+        sqlOptions.MigrationsAssembly("FoodEx")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {

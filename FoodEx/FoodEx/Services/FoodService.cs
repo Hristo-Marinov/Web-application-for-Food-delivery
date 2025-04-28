@@ -1,6 +1,6 @@
 ﻿using FoodEx.Data;
+using FoodEx.Data.Context;
 using FoodEx.Data.Entity;
-using FoodEx.Data.Entity.Context;
 using FoodEx.Entity;
 using FoodEx.Models;
 using Microsoft.EntityFrameworkCore;

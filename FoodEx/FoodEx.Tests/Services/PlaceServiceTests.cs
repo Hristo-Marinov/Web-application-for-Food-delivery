@@ -1,10 +1,10 @@
-﻿using FoodEx.Data.Entity.Context;
-using FoodEx.Data.Entity;
+﻿using FoodEx.Data.Entity;
 using FoodEx.Services;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
+using FoodEx.Data.Context;
 
 namespace FoodEx.Tests.Services
 {

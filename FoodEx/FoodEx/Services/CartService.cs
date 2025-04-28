@@ -1,9 +1,9 @@
 ﻿using FoodEx.Entity;
-using FoodEx.Data.Entity.Context;
 using FoodEx.Models;
 using Microsoft.EntityFrameworkCore;
 using FoodEx.Data.Entity;
 using FoodEx.Data;
+using FoodEx.Data.Context;
 
 public class CartService : ICartService
 {

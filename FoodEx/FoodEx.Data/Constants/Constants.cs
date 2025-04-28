@@ -10,7 +10,7 @@ namespace FoodEx.Data.Constants
     {
         public class ApplicationUserConsants
         {
-            public const string RegularUserId = "";
+            
         }
     }
 }

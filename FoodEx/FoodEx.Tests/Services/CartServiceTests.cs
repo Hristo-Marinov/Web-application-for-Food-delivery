@@ -1,5 +1,5 @@
-﻿using FoodEx.Data.Entity;
-using FoodEx.Data.Entity.Context;
+﻿using FoodEx.Data.Context;
+using FoodEx.Data.Entity;
 using FoodEx.Entity;
 using FoodEx.Models;
 using FoodEx.Services;

@@ -1,11 +1,11 @@
-﻿using FoodEx.Data.Entity.Context;
-using FoodEx.Data.Entity;
+﻿using FoodEx.Data.Entity;
 using FoodEx.Data;
 using FoodEx.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FoodEx.Data.Context;
 
 public class DeliveryService : IDeliveryService
 {

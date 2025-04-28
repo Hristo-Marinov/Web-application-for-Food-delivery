@@ -1,6 +1,6 @@
 ﻿using FoodEx.Data;
+using FoodEx.Data.Context;
 using FoodEx.Data.Entity;
-using FoodEx.Data.Entity.Context;
 using FoodEx.Entity;
 using FoodEx.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +22,7 @@ namespace FoodEx.Services
         public async Task<List<Order>> GetUserOrdersAsync(string userId)
         {
             return await _context.Orders
+                .Where(o => o.Status != OrderStatus.Delivered)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.Restaurant)

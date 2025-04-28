@@ -1,6 +1,6 @@
 ﻿using FoodEx.Controllers;
+using FoodEx.Data.Context;
 using FoodEx.Data.Entity;
-using FoodEx.Data.Entity.Context;
 using FoodEx.Entity;
 using FoodEx.Services;
 using Microsoft.AspNetCore.Identity;
