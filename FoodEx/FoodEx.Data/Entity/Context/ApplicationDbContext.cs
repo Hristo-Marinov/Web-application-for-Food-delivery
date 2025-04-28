@@ -1,4 +1,5 @@
-﻿using FoodEx.Entity;
+﻿using FoodEx.Data.Configurations;
+using FoodEx.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,8 @@ namespace FoodEx.Data.Entity.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //builder.ApplyConfiguration(new AddressConfiguration());
 
             builder.Entity<Food>()
                 .Property(f => f.Price)
