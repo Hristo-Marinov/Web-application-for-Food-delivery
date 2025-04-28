@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using FoodEx.Data.Constants;
 
 namespace FoodEx.Data.Configurations
 {
@@ -14,7 +15,7 @@ namespace FoodEx.Data.Configurations
             builder.HasData(
                 new ApplicationUser
                 {
-                    Id = "admin-user-id",
+                    Id = Constants.Constants.ApplicationUserConsants.AdminId,
                     UserName = "admin",
                     NormalizedUserName = "ADMIN",
                     Email = "admin@foodex.com",
@@ -24,7 +25,7 @@ namespace FoodEx.Data.Configurations
                 },
                 new ApplicationUser
                 {
-                    Id = "regular-user-id",
+                    Id = Constants.Constants.ApplicationUserConsants.UserId,
                     UserName = "user",
                     NormalizedUserName = "USER",
                     Email = "user@foodex.com",
@@ -34,7 +35,7 @@ namespace FoodEx.Data.Configurations
                 },
                 new ApplicationUser
                 {
-                    Id = "deliveryguy-user-id",
+                    Id = Constants.Constants.ApplicationUserConsants.DeliveryGuyId,
                     UserName = "deliveryguy",
                     NormalizedUserName = "DELIVERYGUY",
                     Email = "deliveryguy@foodex.com",
@@ -44,13 +45,13 @@ namespace FoodEx.Data.Configurations
                 },
                 new ApplicationUser
                 {
-                    Id = "restaurant-user-id",
+                    Id = Constants.Constants.ApplicationUserConsants.RestaurantId,
                     UserName = "restaurantowner",
                     NormalizedUserName = "RESTAURANTOWNER",
                     Email = "restaurantowner@foodex.com",
                     NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Restaurant123!")
+                    PasswordHash = hasher.HashPassword(null, "Restaurant123!"),
                 }
             );
         }
