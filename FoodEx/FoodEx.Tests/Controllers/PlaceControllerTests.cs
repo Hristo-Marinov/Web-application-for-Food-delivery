@@ -103,17 +103,25 @@ namespace FoodEx.Tests.Controllers
         }
 
         [Test]
-        public async Task Place_WithSearchTerm_ReturnsFilteredRestaurants()
+        public async Task Place_WithEmptySearchTerm_ReturnsAllRestaurants()
         {
-            var restaurants = new List<Restaurant> { new Restaurant { Name = "Pizza Place" } };
+            // Arrange
+            var restaurants = new List<Restaurant>
+            {
+                new Restaurant { Name = "Pizza Place", Location = "Location 1" },
+                new Restaurant { Name = "Burger Place", Location = "Location 2" }
+            };
+            _placeServiceMock.Setup(s => s.GetRestaurantsAsync(null))
+                .ReturnsAsync(restaurants);
 
-            _placeServiceMock.Setup(s => s.GetRestaurantsAsync("Pizza")).ReturnsAsync(restaurants);
+            // Act
+            var result = await _controller.Place(null) as ViewResult;
 
-            var result = await _controller.Place("Pizza") as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Model, Is.EqualTo(restaurants));
-            Assert.That(result.ViewData["SearchTerm"], Is.EqualTo("Pizza"));
+            // Assert
+            Assert.IsNotNull(result);
+            var model = result.Model as List<Restaurant>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(2, model.Count);
         }
     }
 }
