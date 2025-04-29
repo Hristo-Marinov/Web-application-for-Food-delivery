@@ -430,3 +430,233 @@ body {
     }
 }
 
+.orders-wrapper {
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.orders-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+}
+
+.previous-orders-link {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.orders-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.order-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+    .order-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-info {
+    font-size: 14px;
+    color: #555;
+}
+
+.order-id {
+    font-weight: bold;
+    color: #333;
+}
+
+.order-estimate {
+    color: #777;
+}
+
+.order-status {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.pending {
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.on-process {
+    background-color: #0275d8;
+    color: white;
+}
+
+.delivered {
+    background-color: #5bc0de;
+    color: white;
+}
+
+.order-info .restaurant-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.order-info .delivery-address {
+    color: #777;
+}
+
+.order-items .item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.item-details {
+    color: #777;
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.total-price {
+    color: #5bc0de;
+}
+
+.food-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .food-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666;
+}
+
+.btn-outline-primary {
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 180px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+}
+
+.payment-method-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.payment-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    width: 45%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .payment-card label {
+        font-weight: bold;
+    }
+
+.card-details {
+    margin-top: 20px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.confirm-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .confirm-button:hover {
+        background-color: #0056b3;
+    }

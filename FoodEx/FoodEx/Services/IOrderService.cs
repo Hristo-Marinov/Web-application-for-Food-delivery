@@ -17,6 +17,7 @@ namespace FoodEx.Services
         Task<bool> UpdateOrderStatusByRestaurantAsync(int orderId, OrderStatus status);
         Task<bool> UpdateOrderStatusByDeliveryAsync(int orderId, OrderStatus status, string deliveryUserId);
         Task<List<Order>> GetUserDeliveredOrdersAsync(string userId);
+        Task<Order> GetOrderByIdAsync(int orderId);
 
     }
 }

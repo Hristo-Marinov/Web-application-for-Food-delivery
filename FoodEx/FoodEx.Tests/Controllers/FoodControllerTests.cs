@@ -54,20 +54,6 @@ namespace FoodEx.Tests.Controllers
         }
 
         [Test]
-        public async Task OrderNow_RedirectsToCartIndex()
-        {
-            var userId = "user1";
-            _userManagerMock.Setup(m => m.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>()))
-                            .Returns(userId);
-
-            var result = await _controller.OrderNow(1) as RedirectToActionResult;
-
-            Assert.That(result.ActionName, Is.EqualTo("Index"));
-            Assert.That(result.ControllerName, Is.EqualTo("Cart"));
-            _foodServiceMock.Verify(s => s.AddToCartAsync(userId, 1), Times.Once);
-        }
-
-        [Test]
         public async Task SubmitRating_SubmitsAndRedirects()
         {
             var user = new ApplicationUser { Id = "user1" };

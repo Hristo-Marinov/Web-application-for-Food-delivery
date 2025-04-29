@@ -34,10 +34,14 @@ namespace FoodEx.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> OrderNow(int id)
+        public async Task<IActionResult> OrderNow(int id, int quantities)
         {
-            var userId = _userManager.GetUserId(User);
-            await _foodService.AddToCartAsync(userId, id);
+            for (int i = 0; i < quantities; i++)
+            {
+                var userId = _userManager.GetUserId(User);
+                await _foodService.AddToCartAsync(userId, id);
+            }
+            
             return RedirectToAction("Index", "Cart");
         }
 

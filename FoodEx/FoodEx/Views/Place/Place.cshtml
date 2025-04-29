@@ -14,6 +14,23 @@
         </div>
     </form>
 
+    <div class="row mb-4">
+        <h2 for="category" class="form-label">Filter by Category</h2>
+        <div class="col-12 text-center">
+            <form asp-action="Place" method="get">
+                <div class="d-flex justify-content-center mt-4">
+                    <select name="category" id="category" class="form-select">
+                        <option value="">Select a Category</option>
+                        @foreach (var category in ViewBag.FoodCategories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Filter</button>
+                </div>
+            </form>
+        </div>
+
     <div class="row">
         @foreach (var restaurant in Model)
         {

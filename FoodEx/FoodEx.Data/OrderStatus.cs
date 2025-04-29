@@ -7,5 +7,6 @@ public enum OrderStatus
     Prepared = 2,
     HandedToDelivery = 3,
     OutForDelivery = 4,
-    Delivered = 5
+    Delivered = 5,
+    Declined = 6
 }

@@ -31,5 +31,7 @@ namespace FoodEx.Data.Entity
 
         public OrderStatus Status { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
+
+        public bool PayMethod { get; set; }
     }
 }

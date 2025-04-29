@@ -10,44 +10,39 @@
 <div class="orders-wrapper">
     <h2 class="orders-title">My Orders</h2>
 
-    <a class="nav-link" asp-controller="Orders" asp-action="PreviousOrders">Previous Orders</a>
+    <a class="previous-orders-link" asp-controller="Orders" asp-action="PreviousOrders">View Previous Orders</a>
 
     <div class="orders-list">
         @foreach (var order in Model)
         {
             <div class="order-card">
                 <div class="order-header">
-                    <div>
-                        <div class="order-id">Order ID: #@order.OrderId</div>
-                        <div class="order-estimate">Estimated arrival: @DateTime.Now.AddDays(5).ToString("dd MMM yyyy")</div>
+                    <div class="order-info">
                     </div>
-                    <div class="order-status @(order.Status == OrderStatus.Delivered ? "delivered" : order.Status == OrderStatus.OutForDelivery ? "on-process" : "")">
+                    <div class="order-status @(order.Status == OrderStatus.Delivered ? "delivered" : order.Status == OrderStatus.OutForDelivery ? "on-process" : "pending")">
                         @(order.Status == OrderStatus.Delivered ? "Delivered" : order.Status == OrderStatus.OutForDelivery ? "On Process" : "Pending")
                     </div>
                 </div>
 
-                <div class="order-route">
-                    <span>@order.Restaurant?.Name</span>
-                    <span class="route-dots"></span>
-                    <span>@order.DeliveryAddress?.Street</span>
+                <div class="order-info">
+                    <span class="restaurant-name">@order.Restaurant?.Name</span> - <span class="delivery-address">@order.DeliveryAddress?.Street</span>
                 </div>
 
                 <div class="order-items">
                     @foreach (var item in order.OrderItems)
                     {
                         <div class="item">
-                            <div class="item-name">@item.Food.Name</div>
-                            <div class="item-details">Qty: @item.Quantity</div>
+                            <span class="item-name">@item.Food.Name</span>
+                            <span class="item-details">Qty: @item.Quantity</span>
                         </div>
                     }
                 </div>
 
                 <div class="order-footer">
                     <div class="total-price">
-                        @order.OrderItems.Sum(i => i.Food.Price * i.Quantity) лв
+                        <strong>Total:</strong> @order.OrderItems.Sum(i => i.Food.Price * i.Quantity) лв
                     </div>
                 </div>
-
             </div>
         }
     </div>

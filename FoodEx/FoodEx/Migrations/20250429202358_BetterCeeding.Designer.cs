@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodEx.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250428082850_Constants")]
-    partial class Constants
+    [Migration("20250429202358_BetterCeeding")]
+    partial class BetterCeeding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,6 +168,46 @@ namespace FoodEx.Migrations
                             Name = "Tiramisu",
                             Price = 5.99m,
                             RestaurantId = 1
+                        },
+                        new
+                        {
+                            FoodId = 4,
+                            Category = "Pizza",
+                            Description = "Spicy pepperoni with melted cheese.",
+                            ImageUrl = "https://www.google.com/imgres?q=pepperoni%20pizza&imgurl=https%3A%2F%2Fwww.hunts.com%2Fsites%2Fg%2Ffiles%2Fqyyrlu211%2Ffiles%2FuploadedImages%2Fimg_6934_48664.jpg&imgrefurl=https%3A%2F%2Fwww.hunts.com%2Frecipes%2Fquick-easy-meals%2Feasy-pepperoni-pizza-6934&docid=UinU8SS3nbI-3M&tbnid=vHZe8z-25XU5RM&vet=12ahUKEwjZo5nNhv6MAxUJQ_EDHTnHAHMQM3oECFIQAA..i&w=1000&h=1000&hcb=2&ved=2ahUKEwjZo5nNhv6MAxUJQ_EDHTnHAHMQM3oECFIQAA",
+                            Name = "Pepperoni Pizza",
+                            Price = 9.99m,
+                            RestaurantId = 2
+                        },
+                        new
+                        {
+                            FoodId = 5,
+                            Category = "Pizza",
+                            Description = "Blend of mozzarella, cheddar, gorgonzola, and parmesan.",
+                            ImageUrl = "https://www.google.com/imgres?q=cheese%20pizza&imgurl=https%3A%2F%2Fwww.foodandwine.com%2Fthmb%2FWd4lBRZz3X_8qBr69UOu2m7I2iw%3D%2F1500x0%2Ffilters%3Ano_upscale()%3Amax_bytes(150000)%3Astrip_icc()%2Fclassic-cheese-pizza-FT-RECIPE0422-31a2c938fc2546c9a07b7011658cfd05.jpg&imgrefurl=https%3A%2F%2Fwww.foodandwine.com%2Fclassic-cheese-pizza-6421445&docid=S5cBNkFjU2dZpM&tbnid=ZiJze8NWYgm1BM&vet=12ahUKEwjzrvLfhv6MAxVTSvEDHTxsNCgQM3oECB4QAA..i&w=1500&h=1000&hcb=2&ved=2ahUKEwjzrvLfhv6MAxVTSvEDHTxsNCgQM3oECB4QAA",
+                            Name = "Four Cheese Pizza",
+                            Price = 11.50m,
+                            RestaurantId = 2
+                        },
+                        new
+                        {
+                            FoodId = 6,
+                            Category = "Burger",
+                            Description = "Juicy beef patty with cheddar, lettuce, and tomato.",
+                            ImageUrl = "https://www.google.com/imgres?q=cheeseburger&imgurl=https%3A%2F%2Fi.ytimg.com%2Fvi%2FSvOx7tA_Cv8%2Fmaxresdefault.jpg&imgrefurl=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DSvOx7tA_Cv8&docid=sa9jOBTRimxNKM&tbnid=tpaWsx-k-6zFLM&vet=12ahUKEwjBzvHrhv6MAxUURvEDHffnOtwQM3oFCIQBEAA..i&w=1280&h=720&hcb=2&itg=1&ved=2ahUKEwjBzvHrhv6MAxUURvEDHffnOtwQM3oFCIQBEAA",
+                            Name = "Classic Cheeseburger",
+                            Price = 7.99m,
+                            RestaurantId = 3
+                        },
+                        new
+                        {
+                            FoodId = 7,
+                            Category = "Burger",
+                            Description = "Two beef patties with crispy bacon and extra cheese.",
+                            ImageUrl = "https://www.google.com/imgres?q=bacon%20Burger&imgurl=https%3A%2F%2Fwww.fullerssugarhouse.com%2Fwp-content%2Fuploads%2F2021%2F08%2Fmaplebaconburger.jpg&imgrefurl=https%3A%2F%2Fwww.fullerssugarhouse.com%2Frecipes%2Fmaple-bacon-burger%2F&docid=xnwFz_qwHBAkEM&tbnid=7un67IesMv2gVM&vet=12ahUKEwiUu9H3hv6MAxVGQvEDHYa8H7cQM3oECBYQAA..i&w=2508&h=1672&hcb=2&ved=2ahUKEwiUu9H3hv6MAxVGQvEDHYa8H7cQM3oECBYQAA",
+                            Name = "Bacon Double Cheeseburger",
+                            Price = 10.99m,
+                            RestaurantId = 3
                         });
                 });
 
@@ -187,6 +227,9 @@ namespace FoodEx.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("PayMethod")
+                        .HasColumnType("bit");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -317,6 +360,24 @@ namespace FoodEx.Migrations
                             Name = "Gourmet Paradise",
                             OwnerUserId = "restaurant-user-id",
                             Phone = "555-1234"
+                        },
+                        new
+                        {
+                            RestaurantId = 2,
+                            ImageURL = "https://www.google.com/imgres?q=rastaurant&imgurl=https%3A%2F%2Ftoohotel.com%2Fwp-content%2Fuploads%2F2022%2F09%2FTOO_restaurant_Panoramique_vue_Paris_nuit_v2-scaled.jpg&imgrefurl=https%3A%2F%2Ftoohotel.com%2Fen%2Ftoo-restaurant-en%2F&docid=DUqTn5OiOG00GM&tbnid=9NgHjxUjWdi-rM&vet=12ahUKEwilnvaYh_6MAxWFRvEDHSzQF_oQM3oFCIgBEAA..i&w=2560&h=1707&hcb=2&ved=2ahUKEwilnvaYh_6MAxWFRvEDHSzQF_oQM3oFCIgBEAA",
+                            Location = "456 Pizza Lane, Food City",
+                            Name = "Pizzeria Bella",
+                            OwnerUserId = "restaurant-owner-2",
+                            Phone = "555-5678"
+                        },
+                        new
+                        {
+                            RestaurantId = 3,
+                            ImageURL = "https://www.google.com/imgres?q=rastaurant&imgurl=https%3A%2F%2Fwww.restolacuisine.com%2Frestaurants%2Frestaurant-la-cuisine%2Fwebsite%2Fimages%2FLacuisine_resto.jpg&imgrefurl=https%3A%2F%2Fwww.restolacuisine.com%2Fen%2F&docid=7cTafdiNks18-M&tbnid=ZdwoWxXSaZEwxM&vet=12ahUKEwilnvaYh_6MAxWFRvEDHSzQF_oQM3oECFwQAA..i&w=864&h=576&hcb=2&ved=2ahUKEwilnvaYh_6MAxWFRvEDHSzQF_oQM3oECFwQAA",
+                            Location = "789 Burger Blvd, Food City",
+                            Name = "Burger House",
+                            OwnerUserId = "restaurant-owner-3",
+                            Phone = "555-9876"
                         });
                 });
 
@@ -418,15 +479,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "admin-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c2ec5250-896c-4a67-9757-72d986953d7e",
+                            ConcurrencyStamp = "d1ba0169-8b9f-4773-aa33-83ae832e1f6a",
                             Email = "admin@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODEX.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAELL2csk7md5C8dObPhx03pSIzcsIOUQmkArJ/0/jgxy9AHDF+FXuF2zvj0uUaN60dw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENBnmOWHFhjHxKv8fDiT612kO1j0UdTitwW/TaK19ocqukeAG+2GP/PQtgBt1IWjyA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bff075a6-a180-4b0e-bb5c-e6703cfcf740",
+                            SecurityStamp = "3bf4e744-9fae-4d2b-9761-39bb1f5252f9",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -434,15 +495,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "regular-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be7a54d5-516c-4263-bd12-56f57b5bce13",
+                            ConcurrencyStamp = "8c3f3589-69e3-4252-9f44-3ef08fe8d524",
                             Email = "user@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@FOODEX.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAECVNDvGgHF11EcwKyqoVB2i1oTTy9WYZ4ohfWGioJQ1mCCPGFixgfYA2GnilI7sqNw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJNT3v6Z/uQPEzjQnFnu5SvudVmBACTQUi+AiSDq2CL244QUYLVZ7Wog16SxlO7Gtw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b9ea283c-9944-40d9-9e11-1682257d113e",
+                            SecurityStamp = "06cab0eb-7d64-4c2f-80dd-c7426389b272",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         },
@@ -450,15 +511,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "deliveryguy-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c2fdbc6b-6f73-47bf-b544-d14ff7141f91",
+                            ConcurrencyStamp = "4d5eacd2-a6f9-47df-a6e5-ac29ea0b32f1",
                             Email = "deliveryguy@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DELIVERYGUY@FOODEX.COM",
                             NormalizedUserName = "DELIVERYGUY",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMcCaagxuNqRBUkgzL6omfiRa3dpheEUaTtjvN7RCZj73hwXCCgVfntvcxNSE3IFUA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO92/QdQ3pt4gqkxm9GlTiygk9JIfQ/ruSAMX3cOO7qMMFn8ePkJ4ACyAfoBrbE5bQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "21cee879-876a-4576-a7a3-3ef0d8aabda6",
+                            SecurityStamp = "0c186246-3503-4ca9-8e02-f349f762ee72",
                             TwoFactorEnabled = false,
                             UserName = "deliveryguy"
                         },
@@ -466,17 +527,49 @@ namespace FoodEx.Migrations
                         {
                             Id = "restaurant-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7aa70832-c018-459d-9848-f8d21ec62bf7",
+                            ConcurrencyStamp = "a4b7d13a-4a39-46de-8f27-47bfa3f7ead2",
                             Email = "restaurantowner@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                             NormalizedUserName = "RESTAURANTOWNER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPJeph41fqQRtt2k1MTj/FPC7W39XzKkKJ4pomZ/VyzlOy0wLcI6OiT5Sr5szOEI5g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBb4eYdhgxAEWw3b8vIEMjOFhaJOqRG1NfrIW3l4zGiiGTP6OShT/yBukBBdfVZNvA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "21b7d1eb-63ea-4e68-87cc-e0855b2c4c10",
+                            SecurityStamp = "ca807b99-5ad4-43d2-af65-45b4440e4210",
                             TwoFactorEnabled = false,
                             UserName = "restaurantowner"
+                        },
+                        new
+                        {
+                            Id = "restaurant-owner-2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "30066314-1acc-4e99-aa6f-5fcc827ae491",
+                            Email = "pizzalover@foodex.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "PIZZALOVER@FOODEX.COM",
+                            NormalizedUserName = "PIZZALOVER",
+                            PasswordHash = "AQAAAAEAACcQAAAAENGkF/RjMIEAuBL7ysgxlArRDs7HyBv/I4NC2nrjkplim55DKCA7Y8HpW40wrgwQgQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f06d2561-412f-458b-9715-3a2ac66297eb",
+                            TwoFactorEnabled = false,
+                            UserName = "pizzalover"
+                        },
+                        new
+                        {
+                            Id = "restaurant-owner-3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4f5736fb-89fc-496d-8583-85b120be25fa",
+                            Email = "burgerboss@foodex.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "BURGERBOSS@FOODEX.COM",
+                            NormalizedUserName = "BURGERBOSS",
+                            PasswordHash = "AQAAAAEAACcQAAAAECj7YrdMxw8IY+rAPLDN7yiV3YW+R6OzMCaz+EBXoU4DbTiWCn6PlADOExTwWV4ZJA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5942a49c-e9e1-4f7e-ba12-0950de08aa62",
+                            TwoFactorEnabled = false,
+                            UserName = "burgerboss"
                         });
                 });
 
@@ -510,28 +603,28 @@ namespace FoodEx.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "7c0ff502-bb99-40d0-a4ab-2ae791a34df0",
+                            ConcurrencyStamp = "0065ae10-afae-44dd-9ca0-eeac73d08037",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "6098e553-ce71-4e1a-9ed3-f51bb76b297a",
+                            ConcurrencyStamp = "46f761dc-e9df-49aa-bd53-7ee0a6ff64b3",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f9490bbe-2837-40d8-a82b-eb4577ecc5e6",
+                            ConcurrencyStamp = "84f72335-39be-4fda-aa99-ae3d3aa621f0",
                             Name = "DeliveryGuy",
                             NormalizedName = "DELIVERYGUY"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "f55b9419-d533-43f5-bf79-6d1d3459492e",
+                            ConcurrencyStamp = "5ed12ac5-39cb-43e4-92ce-1f52541253b8",
                             Name = "Restaurant",
                             NormalizedName = "RESTAURANT"
                         });

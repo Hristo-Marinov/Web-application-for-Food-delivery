@@ -4,34 +4,37 @@
     ViewData["Title"] = "Previous Orders";
 }
 
-<div class="orders-wrapper">
-    <h2 class="orders-title">Previous Orders</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Previous Orders</h2>
 
-    <div class="orders-list">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach (var order in Model)
         {
-            <div class="order-card">
-                <div class="order-header">
-                    <span class="order-id">Order #@order.OrderId</span>
-                    <span class="order-status delivered">Delivered</span>
-                </div>
-                <div class="order-route">
-                    <span>@order.DeliveryAddress?.Street</span>
-                    <span class="route-dots">...</span>
-                    <span>@order.DeliveryAddress?.City</span>
-                </div>
-                <div class="order-items">
-                    @foreach (var item in order.OrderItems)
-                    {
-                        <div class="item">
-                            <div class="item-name">@item.Food.Name</div>
-                            <div class="item-details">x @item.Quantity</div>
+            <div class="col">
+                <div class="card shadow-sm h-100 order-card" style="transition: all 0.3s ease;">
+                    <div class="card-body d-flex flex-column">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">Order #@order.OrderId</div>
+                                <div class="order-status delivered">Delivered</div>
+                            </div>
+                            <div class="order-route">
+                                <span>@order.DeliveryAddress?.Street</span>
+                                <span class="route-dots">...</span>
+                                <span>@order.DeliveryAddress?.City</span>
+                            </div>
                         </div>
-                    }
-                </div>
-                <div class="order-footer">
-                    <div class="total-price">Total: @order.TotalPrice лв</div>
-                    <a href="#" class="details-button">Details</a>
+
+                        <div class="order-items">
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <div class="item">
+                                    <div class="item-name">@item.Food.Name</div>
+                                    <div class="item-details">Qty: @item.Quantity</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         }

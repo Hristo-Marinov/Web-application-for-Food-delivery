@@ -52,6 +52,26 @@ namespace FoodEx.Data.Configurations
                     NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "Restaurant123!"),
+                },
+                new ApplicationUser
+                {
+                    Id = "restaurant-owner-2",
+                    UserName = "pizzalover",
+                    NormalizedUserName = "PIZZALOVER",
+                    Email = "pizzalover@foodex.com",
+                    NormalizedEmail = "PIZZALOVER@FOODEX.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Pizza123!"),
+                },
+                new ApplicationUser
+                {
+                    Id = "restaurant-owner-3",
+                    UserName = "burgerboss",
+                    NormalizedUserName = "BURGERBOSS",
+                    Email = "burgerboss@foodex.com",
+                    NormalizedEmail = "BURGERBOSS@FOODEX.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Burger123!"),
                 }
             );
         }

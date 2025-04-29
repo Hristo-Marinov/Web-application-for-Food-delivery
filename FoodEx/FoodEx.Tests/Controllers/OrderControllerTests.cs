@@ -11,6 +11,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;  // Add this for IConfiguration
 
 namespace FoodEx.Tests.Controllers
 {
@@ -20,6 +21,8 @@ namespace FoodEx.Tests.Controllers
         private Mock<IOrderService> _mockOrderService;
         private Mock<IDeliveryService> _mockDeliveryService;
         private Mock<UserManager<ApplicationUser>> _mockUserManager;
+        private Mock<IConfiguration> _mockConfiguration;  // Add this mock
+        private Mock<IEmailSender> _mockEmailSender;      // Add this mock
         private OrdersController _controller;
 
         [SetUp]
@@ -30,7 +33,10 @@ namespace FoodEx.Tests.Controllers
             var userStore = new Mock<IUserStore<ApplicationUser>>();
             _mockUserManager = new Mock<UserManager<ApplicationUser>>(userStore.Object, null, null, null, null, null, null, null, null);
 
-            _controller = new OrdersController(_mockOrderService.Object, _mockDeliveryService.Object, _mockUserManager.Object);
+            _mockConfiguration = new Mock<IConfiguration>();  // Initialize the mock for IConfiguration
+            _mockEmailSender = new Mock<IEmailSender>();      // Initialize the mock for IEmailSender
+
+            _controller = new OrdersController(_mockOrderService.Object, _mockDeliveryService.Object, _mockUserManager.Object, _mockConfiguration.Object, _mockEmailSender.Object);  // Inject mocks into the controller
         }
 
         [Test]
@@ -87,5 +93,6 @@ namespace FoodEx.Tests.Controllers
             Assert.IsNotNull(result);
             Assert.AreEqual("UserOverview", result.ViewName);
         }
+
     }
 }

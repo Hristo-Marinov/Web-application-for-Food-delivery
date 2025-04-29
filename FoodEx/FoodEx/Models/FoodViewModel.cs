@@ -1,4 +1,6 @@
-﻿namespace FoodEx.Models
+﻿using FoodEx.Data.Entity;
+
+namespace FoodEx.Models
 {
     public class FoodViewModel
     {
@@ -11,6 +13,9 @@
         public string ImageUrl { get; set; }
         public string RestaurantName { get; set; }
         public double AverageRating { get; set; }
+        //public int Quantity { get; set; }
+
+        public List<FoodQuantityViewModel> Foods { get; set; }
 
         public List<CommentViewModel> Comments { get; set; }
 

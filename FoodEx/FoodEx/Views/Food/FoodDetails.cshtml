@@ -29,6 +29,7 @@
 
         <form asp-controller="Food" asp-action="OrderNow" method="post" class="d-flex justify-content-center mt-4">
             <input type="hidden" name="id" value="@Model.FoodId" />
+            <input type="number" name="quantities" value="1" min="1" class="form-control" />
             <button type="submit" class="btn btn-success btn-lg w-100">Add to Cart for @Model.Price лв</button>
         </form>
 

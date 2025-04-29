@@ -1,10 +1,11 @@
-﻿using FoodEx.Controllers;
-using FoodEx.Data.Entity;
-using FoodEx.Entity;
-using FoodEx.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using FoodEx.Controllers;
+using FoodEx.Data.Entity;
+using FoodEx.Services;
+using FoodEx.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,19 +16,29 @@ namespace FoodEx.Tests.Controllers
     {
         private Mock<IPlaceService> _placeServiceMock;
         private PlaceController _controller;
+        private ApplicationDbContext _context;
 
         [SetUp]
         public void Setup()
         {
+            // Mock the IPlaceService
             _placeServiceMock = new Mock<IPlaceService>();
-            _controller = new PlaceController(_placeServiceMock.Object);
+
+            // Set up InMemory database for testing
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                            .UseInMemoryDatabase(databaseName: "TestDatabase")
+                            .Options;
+
+            _context = new ApplicationDbContext(options);
+
+            // Initialize the controller with the mocked IPlaceService and the InMemory database context
+            _controller = new PlaceController(_placeServiceMock.Object, _context);
         }
 
         [Test]
         public async Task PlaceDetails_ValidId_ReturnsView()
         {
-            var restaurant = new Restaurant { RestaurantId = 1, Name = "Test", Foods = new List<Food>() };
-
+            var restaurant = new Restaurant { RestaurantId = 1, Name = "Test Restaurant", Foods = new List<Food>() };
             _placeServiceMock.Setup(s => s.GetRestaurantWithFoodsAsync(1)).ReturnsAsync(restaurant);
 
             var result = await _controller.PlaceDetails(1) as ViewResult;
@@ -87,7 +98,7 @@ namespace FoodEx.Tests.Controllers
             var result = await _controller.Place(null) as ViewResult;
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.Null); 
+            Assert.That(result.ViewName, Is.Null);
             Assert.That(result.Model, Is.EqualTo(restaurants));
         }
 

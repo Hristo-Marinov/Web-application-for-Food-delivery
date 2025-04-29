@@ -4,8 +4,6 @@ using FoodEx.Data.Entity;
 using FoodEx.Entity;
 using FoodEx.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FoodEx.Services
@@ -22,11 +20,11 @@ namespace FoodEx.Services
         public async Task<List<Order>> GetUserOrdersAsync(string userId)
         {
             return await _context.Orders
-                .Where(o => o.Status != OrderStatus.Delivered)
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.Restaurant)
                 .Where(o => o.UserId == userId)
+                .Where (o => o.Status != OrderStatus.Declined)
                 .ToListAsync();
         }
 
@@ -38,7 +36,7 @@ namespace FoodEx.Services
             return await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
-                .Where(o => o.Status != OrderStatus.HandedToDelivery && o.Status != OrderStatus.Delivered)
+                .Where(o => o.Status != OrderStatus.HandedToDelivery && o.Status != OrderStatus.Delivered && o.Status != OrderStatus.Declined)
                 .Where(o => o.RestaurantId == restaurant.RestaurantId)
                 .ToListAsync();
         }
@@ -49,31 +47,17 @@ namespace FoodEx.Services
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Food)
                 .Include(o => o.DeliveryAddress)
-                .Where(o => o.DeliveryGuyId == deliveryUser.Id && o.Status != OrderStatus.Delivered)
+                .Where(o => o.DeliveryGuyId == deliveryUser.Id && o.Status != OrderStatus.Delivered && o.Status != OrderStatus.Declined)
                 .ToListAsync();
         }
 
         public async Task<List<Order>> GetAvailableDeliveryOrdersAsync()
         {
             return await _context.Orders
-                .Where(o => o.Status == OrderStatus.HandedToDelivery && o.DeliveryGuyId == null)
+                .Where(o => o.Status == OrderStatus.HandedToDelivery && o.DeliveryGuyId == null && o.Status != OrderStatus.Declined)
                 .Include(o => o.DeliveryAddress)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Food)
-                .Select(o => new Order
-                {
-                    OrderId = o.OrderId,
-                    Status = o.Status,
-                    DeliveryAddress = new Address
-                    {
-                        Street = o.DeliveryAddress.Street
-                    },
-                    OrderItems = o.OrderItems.Select(oi => new OrderItem
-                    {
-                        Food = new Food { Name = oi.Food.Name },
-                        Quantity = oi.Quantity
-                    }).ToList()
-                })
                 .ToListAsync();
         }
 
@@ -81,7 +65,7 @@ namespace FoodEx.Services
         {
             var order = await _context.Orders.FindAsync(orderId);
 
-            if (order == null || order.Status != OrderStatus.HandedToDelivery || order.DeliveryGuyId != null)
+            if (order == null || order.Status != OrderStatus.HandedToDelivery || order.DeliveryGuyId != null && order.Status != OrderStatus.Declined)
                 return false;
 
             order.DeliveryGuyId = deliveryUserId;
@@ -116,6 +100,17 @@ namespace FoodEx.Services
             return true;
         }
 
+        public async Task<Order> GetOrderByIdAsync(int orderId)
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Food)
+                .Include(o => o.Restaurant)
+                .Include(o => o.DeliveryAddress)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+        }
+
         public async Task<List<OrderViewModel>> GetOrdersForDeliveryAsync()
         {
             return await _context.Orders
@@ -132,6 +127,7 @@ namespace FoodEx.Services
                 })
                 .ToListAsync();
         }
+
         public async Task<List<Order>> GetUserDeliveredOrdersAsync(string userId)
         {
             return await _context.Orders
