@@ -9,7 +9,16 @@
 
 
 
-    <form asp-action="CreateRestaurant" method="post">
+<form asp-action="CreateRestaurant" method="post">
+    @if (isVerified)
+    {
+        <div class="alert alert-warning text-center p-5 mt-5 rounded-4 shadow-sm" style="background-color: #fff3cd; border: 1px solid #ffeeba;">
+            <h4 class="mb-3">Your account is not verified yet</h4>
+            <p class="mb-0">Please wait for an administrator to approve your account before accepting deliveries.</p>
+        </div>
+    }
+    else
+    {
         <div class="mb-3">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" />
@@ -34,11 +43,10 @@
             <span asp-validation-for="ImageURL" class="text-danger"></span>
         </div>
 
-
         <button type="submit" class="btn btn-primary">Create</button>
-    </form>
+    }
+</form>
 
-    @section Scripts {
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     }
-

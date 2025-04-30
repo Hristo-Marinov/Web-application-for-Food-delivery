@@ -51,7 +51,7 @@ namespace FoodEx.Tests.Services
             await _context.Restaurants.AddAsync(restaurant);
             await _context.SaveChangesAsync();
 
-            var food = new Food { Name = "Taco", Description = "Delicious", Price = 5, Category = "Mexican", ImageUrl = "taco.jpg", RestaurantId = restaurant.RestaurantId };
+            var food = new Food { Name = "Taco", Description = "Delicious", Price = 5, ImageUrl = "taco.jpg", RestaurantId = restaurant.RestaurantId };
             await _context.Foods.AddAsync(food);
             await _context.SaveChangesAsync();
 
@@ -68,7 +68,7 @@ namespace FoodEx.Tests.Services
             await _context.Restaurants.AddAsync(restaurant);
             await _context.SaveChangesAsync();
 
-            var food = new Food { Name = "Coffee", Description = "Hot Drink", Price = 3, Category = "Beverage", ImageUrl = "coffee.jpg", RestaurantId = restaurant.RestaurantId };
+            var food = new Food { Name = "Coffee", Description = "Hot Drink", Price = 3, ImageUrl = "coffee.jpg", RestaurantId = restaurant.RestaurantId };
             await _context.Foods.AddAsync(food);
             await _context.SaveChangesAsync();
 

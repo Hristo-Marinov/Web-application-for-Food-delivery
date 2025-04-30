@@ -50,7 +50,7 @@ namespace FoodEx.Tests.Services
         [Test]
         public async Task GetFoodCountAsync_ReturnsCorrectCount()
         {
-            await _context.Foods.AddAsync(new Food { Name = "Pizza", Description = "Tasty", Price = 10, Category = "Main", ImageUrl = "img.jpg", Restaurant = new Restaurant { Name = "Test", Location = "Loc", Phone = "123", OwnerUserId = "owner" } });
+            await _context.Foods.AddAsync(new Food { Name = "Pizza", Description = "Tasty", Price = 10, ImageUrl = "img.jpg", Restaurant = new Restaurant { Name = "Test", Location = "Loc", Phone = "123", OwnerUserId = "owner" } });
             await _context.SaveChangesAsync();
 
             var count = await _homeService.GetFoodCountAsync();

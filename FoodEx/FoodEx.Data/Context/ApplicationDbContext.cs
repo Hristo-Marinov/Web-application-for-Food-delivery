@@ -23,6 +23,8 @@ namespace FoodEx.Data.Context
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<FoodCategory> FoodCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,6 +42,8 @@ namespace FoodEx.Data.Context
             builder.ApplyConfiguration(new RatingConfiguration());
             builder.ApplyConfiguration(new RestaurantConfiguration());
             builder.ApplyConfiguration(new UserFavoriteConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new FoodCategoryConfiguration());
         }
     }
 }

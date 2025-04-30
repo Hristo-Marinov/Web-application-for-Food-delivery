@@ -8,7 +8,7 @@ namespace FoodEx.Services
     {
         Task<Restaurant> GetRestaurantByOwnerIdAsync(string ownerId);
         Task<bool> CreateRestaurantAsync(Restaurant restaurant);
-        Task<bool> AddFoodAsync(string ownerId, Food food);
+        Task<bool> AddFoodAsync(string ownerId, Food food, List<string> categoryNames);
         Task<bool> DeleteFoodAsync(int foodId);
     }
 }

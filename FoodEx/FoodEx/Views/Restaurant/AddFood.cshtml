@@ -1,36 +1,41 @@
 ﻿@model FoodEx.Models.FoodViewModel
 
-<h2>Add New Food</h2>
+<form method="post" enctype="multipart/form-data">
 
-<form asp-action="AddFood" method="post">
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
+        <label for="Name">Food Name</label>
+        <input type="text" name="Name" class="form-control" value="@Model.Name" required />
     </div>
 
     <div class="form-group">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
+        <label for="Description">Food Description</label>
+        <textarea name="Description" class="form-control" required>@Model.Description</textarea>
     </div>
 
     <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
+        <label for="Price">Price</label>
+        <input type="number" name="Price" class="form-control" value="@Model.Price" step="0.01" required />
     </div>
 
     <div class="form-group">
-        <label asp-for="Category"></label>
-        <input asp-for="Category" class="form-control" />
+        <label for="ImageUrl">Image URL</label>
+        <input type="text" name="ImageUrl" class="form-control" value="@Model.ImageUrl" />
     </div>
 
     <div class="form-group">
-        <label asp-for="ImageUrl"></label>
-        <input asp-for="ImageUrl" class="form-control" />
+        <label>Categories</label>
+        <div>
+            @foreach (var category in Model.Categories)
+            {
+                <label>
+                    <input type="checkbox" name="selectedCategories" value="@category.CategoryId" />
+                    @category.CategoryName
+                </label>
+
+                <br />
+            }
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Add Food</button>
+    <button type="submit" class="btn btn-primary">Add Food</button>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

@@ -29,15 +29,42 @@ namespace FoodEx.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> AddFoodAsync(string ownerId, Food food)
+        public async Task<bool> AddFoodAsync(string ownerId, Food food, List<string> categoryNames)
         {
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.OwnerUserId == ownerId);
             if (restaurant == null) return false;
 
             food.RestaurantId = restaurant.RestaurantId;
+
+            var categories = new List<FoodCategory>();  
+
+            foreach (var categoryName in categoryNames)
+            {
+                
+                var category = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.CategoryName.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
+
+                if (category == null)
+                {
+                    category = new Category { CategoryName = categoryName };
+                    _context.Categories.Add(category);
+                    await _context.SaveChangesAsync();  
+                }
+
+                categories.Add(new FoodCategory
+                {
+                    Food = food,
+                    Category = category
+                });
+            }
+
             _context.Foods.Add(food);
+
+            _context.FoodCategories.AddRange(categories);
+
             return await _context.SaveChangesAsync() > 0;
         }
+
 
         public async Task<bool> DeleteFoodAsync(int foodId)
         {

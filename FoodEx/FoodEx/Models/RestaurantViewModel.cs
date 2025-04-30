@@ -8,5 +8,6 @@
         public string Phone { get; set; }
         public string OwnerUserId { get; set; }
         public string OwnerName { get; set; }
+        public bool IsVerified { get; set; }
     }
 }

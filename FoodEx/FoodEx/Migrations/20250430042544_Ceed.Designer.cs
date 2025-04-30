@@ -4,6 +4,7 @@ using FoodEx.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodEx.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430042544_Ceed")]
+    partial class Ceed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -557,15 +559,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "admin-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b22c3757-4ba5-4605-b629-c0b70fac089d",
+                            ConcurrencyStamp = "e8b9459b-6e9e-46db-b93d-e63b42b008c1",
                             Email = "admin@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODEX.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAENKQIOx/RWGVNUwmrrpIZW3HIWeFnmnooc1M5789bFXnlOnHCxRi3919Jo7daioyNQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENYv6zL0y/Y6is+sg0ehci7t34+eLzUogw0orwPJ1XK89yt45SThwbTkazpFAa+uTw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0a9476ff-45c3-45f9-b55d-e9c66df4ba98",
+                            SecurityStamp = "4e640418-ffbf-4e97-a11d-6d536b3e1ed8",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -573,15 +575,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "regular-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8293fa75-7fcc-4c0b-a963-085403e837e0",
+                            ConcurrencyStamp = "71041058-f2b7-4837-8c0c-1ffdf017fc33",
                             Email = "user@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@FOODEX.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFcLmma/p0w0fd1URqLg0+t9yvY8iZmRIKak+88CBLfF0eqjYuPBjs6I7qD215pGQg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGj8itXk5/u6C6yaj2fFGQvf43heu/BYMMNFQSpiaJFOChZkv9myEkbwTM9cA9NoGQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a37fc27c-35fe-43eb-a9c3-6235e2bd9b65",
+                            SecurityStamp = "c8a30f00-a7f4-4c65-b0ed-ca885e89c548",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         },
@@ -589,15 +591,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "deliveryguy-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0edf17ea-a8de-44bf-880a-90180657f957",
+                            ConcurrencyStamp = "71ab8353-6ba9-4df1-8875-fec2cb0f230b",
                             Email = "deliveryguy@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DELIVERYGUY@FOODEX.COM",
                             NormalizedUserName = "DELIVERYGUY",
-                            PasswordHash = "AQAAAAEAACcQAAAAECuzYwnKJHABbcxpxFJL2Guw5nk5sCOero4VbSviJOMhYhzz0XedSD6whCOOALuklg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDJ9u+/kIWKcw9iKoEp+Z1h6b2ahBCkhnH52TRTwOH2PZoA8bWu8nnkRT+KEjX+yyw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d56c5a2b-e5b0-4f39-a8c6-40db83e65d33",
+                            SecurityStamp = "06b40779-b561-49ce-93b0-681af83b1429",
                             TwoFactorEnabled = false,
                             UserName = "deliveryguy"
                         },
@@ -605,15 +607,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "restaurant-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6721042b-b9d7-4a96-baa9-4056cb213209",
+                            ConcurrencyStamp = "b9ae6312-5ec3-4808-b3ef-0d1e007fe9c2",
                             Email = "restaurantowner@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RESTAURANTOWNER@FOODEX.COM",
                             NormalizedUserName = "RESTAURANTOWNER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOCiBSsVWze4LMJwA6NABo/npBCDZ5wstfN6MuYr+Sx/pgU7MJvTVcvBPchqGZzBrg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIRObvjcy9QjII3Es+tLO1iURBKgknU1P2hALZTGO5mCGePDhWNZKPrJtWmTzPzHPA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f3d5197b-eb89-4182-93c4-f9d4dd292905",
+                            SecurityStamp = "b4c8de9e-b178-4b3a-b5c3-263df457a687",
                             TwoFactorEnabled = false,
                             UserName = "restaurantowner"
                         },
@@ -621,15 +623,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "restaurant-owner-2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d3814559-7da6-4587-9c4f-c6e08492ea2d",
+                            ConcurrencyStamp = "f9c0020f-6737-473d-b1e7-d88e3f778b04",
                             Email = "pizzalover@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "PIZZALOVER@FOODEX.COM",
                             NormalizedUserName = "PIZZALOVER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOEmEqleQMdRqZH+vRFC6xqlD4vZYB82A+Aa4rF0eddqL8pPW+jbNYAg7baxfz4bBw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAu2bWXMEcRmt8FKQyktsYlrcUHE8e5sKveVEUex+//X7/MNX5L49Gx0Ge5HIZ9rIw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "32c40fb0-c8c9-41c9-817e-5a209caa8a18",
+                            SecurityStamp = "a9a91192-7923-4ef2-9d5d-0fa8aa87ab71",
                             TwoFactorEnabled = false,
                             UserName = "pizzalover"
                         },
@@ -637,15 +639,15 @@ namespace FoodEx.Migrations
                         {
                             Id = "restaurant-owner-3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9316c447-d4d9-4e1d-83a2-001fc1f96433",
+                            ConcurrencyStamp = "030d63c3-ded8-4598-af21-ada8a69a80af",
                             Email = "burgerboss@foodex.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "BURGERBOSS@FOODEX.COM",
                             NormalizedUserName = "BURGERBOSS",
-                            PasswordHash = "AQAAAAEAACcQAAAAEACxRmUGGaFLpZsDOE1usOoaKRF0tigOyZ+AzGws8vWNkSVrZ4OBn8PHhshZF5AfBA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEET+VeP9nrrikMsIyQj7sOGdDVlNp4QOM6M4YD7i9Aoez2mLeXAtO8W0kX1A9irj+Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e54ce684-28fe-4e4a-9864-fc1f9c8aa3d9",
+                            SecurityStamp = "913fa617-b677-43c6-9e40-e28f20002b7f",
                             TwoFactorEnabled = false,
                             UserName = "burgerboss"
                         });
@@ -681,28 +683,28 @@ namespace FoodEx.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "fecd5963-4219-456d-9c81-297462ddca92",
+                            ConcurrencyStamp = "4f875268-7636-4880-9bce-32c242b66ac8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "0250927b-8049-4478-9b0b-c10d9be5d68f",
+                            ConcurrencyStamp = "e75e47af-7acd-4d63-9b9a-01ef81286dcf",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "cba215af-14dd-45c0-a261-4c1f9195a8cf",
+                            ConcurrencyStamp = "088431aa-c3f3-42f1-9ae8-78c62deaffdf",
                             Name = "DeliveryGuy",
                             NormalizedName = "DELIVERYGUY"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "29553a20-38bf-4066-8b8b-ee05ce99c8f7",
+                            ConcurrencyStamp = "74ac91eb-ecaa-472a-a1b9-23d0d22aa4fa",
                             Name = "Restaurant",
                             NormalizedName = "RESTAURANT"
                         });

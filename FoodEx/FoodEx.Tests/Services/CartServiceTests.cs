@@ -41,7 +41,6 @@ namespace FoodEx.Tests.Services
                 FoodId = id,
                 Name = name,
                 Price = 10,
-                Category = "Category",
                 Description = "Description",
                 ImageUrl = "ImageUrl"
             };

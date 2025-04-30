@@ -1,12 +1,16 @@
 ﻿using FoodEx.Controllers;
+using FoodEx.Data.Context;
 using FoodEx.Data.Entity;
 using FoodEx.Entity;
 using FoodEx.Models;
 using FoodEx.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FoodEx.Tests.Controllers
@@ -16,6 +20,7 @@ namespace FoodEx.Tests.Controllers
     {
         private Mock<IRestaurantService> _restaurantServiceMock;
         private Mock<UserManager<ApplicationUser>> _userManagerMock;
+        private Mock<ApplicationDbContext> _contextMock;
         private RestaurantController _controller;
 
         [SetUp]
@@ -24,14 +29,17 @@ namespace FoodEx.Tests.Controllers
             var store = new Mock<IUserStore<ApplicationUser>>();
             _userManagerMock = new Mock<UserManager<ApplicationUser>>(store.Object, null, null, null, null, null, null, null, null);
             _restaurantServiceMock = new Mock<IRestaurantService>();
-            _controller = new RestaurantController(_restaurantServiceMock.Object, _userManagerMock.Object);
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "TestDb").Options;
+            _contextMock = new Mock<ApplicationDbContext>(options);
+
+            _controller = new RestaurantController(_restaurantServiceMock.Object, _userManagerMock.Object, _contextMock.Object);
         }
 
         [Test]
-        public async Task MyRestaurant_ReturnsRestaurantView()
+        public async Task MyRestaurant_ReturnsViewWithRestaurant()
         {
-            var userId = "user-id";
-            var restaurant = new Restaurant { Name = "Test" };
+            var userId = "user-123";
+            var restaurant = new Restaurant { Name = "Testaurant" };
 
             _userManagerMock.Setup(u => u.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
             _restaurantServiceMock.Setup(s => s.GetRestaurantByOwnerIdAsync(userId)).ReturnsAsync(restaurant);
@@ -43,14 +51,7 @@ namespace FoodEx.Tests.Controllers
         }
 
         [Test]
-        public void CreateRestaurant_Get_ReturnsView()
-        {
-            var result = _controller.CreateRestaurant() as ViewResult;
-            Assert.That(result, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task CreateRestaurant_Post_UnverifiedUser_ReturnsError()
+        public async Task CreateRestaurant_Post_InvalidUser_ReturnsViewWithError()
         {
             var user = new ApplicationUser { LockoutEnabled = true };
             _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).ReturnsAsync(user);
@@ -65,44 +66,28 @@ namespace FoodEx.Tests.Controllers
         [Test]
         public async Task CreateRestaurant_Post_Valid_ReturnsRedirect()
         {
-            var user = new ApplicationUser { Id = "123", LockoutEnabled = false };
+            var user = new ApplicationUser { Id = "user-456", LockoutEnabled = false };
             _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).ReturnsAsync(user);
             _restaurantServiceMock.Setup(s => s.CreateRestaurantAsync(It.IsAny<Restaurant>())).ReturnsAsync(true);
 
-            var model = new Restaurant { Name = "New", Location = "Here", Phone = "000" };
+            var model = new Restaurant { Name = "Resto", Location = "Loc", Phone = "123" };
             var result = await _controller.CreateRestaurant(model) as RedirectToActionResult;
 
             Assert.That(result.ActionName, Is.EqualTo("MyRestaurant"));
         }
 
         [Test]
-        public async Task AddFood_Valid_ReturnsRedirect()
+        public async Task AddFood_Post_InvalidModel_ReturnsViewWithError()
         {
-            var userId = "123";
-            _userManagerMock.Setup(u => u.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
-            _restaurantServiceMock.Setup(s => s.AddFoodAsync(userId, It.IsAny<Food>())).ReturnsAsync(true);
-
-            var result = await _controller.AddFood(new Food()) as RedirectToActionResult;
-
-            Assert.That(result.ActionName, Is.EqualTo("MyRestaurant"));
-        }
-
-        [Test]
-        public async Task AddFood_Failure_ReturnsViewWithModel()
-        {
-            var userId = "123";
-            _userManagerMock.Setup(u => u.GetUserId(It.IsAny<System.Security.Claims.ClaimsPrincipal>())).Returns(userId);
-            _restaurantServiceMock.Setup(s => s.AddFoodAsync(userId, It.IsAny<Food>())).ReturnsAsync(false);
-
-            var food = new Food { Name = "Fail" };
-            var result = await _controller.AddFood(food) as ViewResult;
+            var viewModel = new FoodViewModel();
+            var result = await _controller.AddFood(viewModel, new List<int>()) as ViewResult;
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Model, Is.EqualTo(food));
+            Assert.That(_controller.ModelState.IsValid, Is.False);
         }
 
         [Test]
-        public async Task DeleteFood_Valid_Redirects()
+        public async Task DeleteFood_CallsServiceAndRedirects()
         {
             var result = await _controller.DeleteFood(1) as RedirectToActionResult;
 

@@ -44,7 +44,6 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
-                                <th>Category</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -54,8 +53,8 @@
                                 <tr>
                                     <td>@food.Name</td>
                                     <td>@food.Description</td>
-                                    <td>@food.Price.ToString("C")</td>
-                                    <td>@food.Category</td>
+                                    <td>@food.Price лв</td>
+                                    <td></td>
                                     <td>
                                         <form asp-action="DeleteFood" method="post" class="d-inline">
                                             <input type="hidden" name="id" value="@food.FoodId" />

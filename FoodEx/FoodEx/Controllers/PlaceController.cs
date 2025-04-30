@@ -20,21 +20,32 @@ namespace FoodEx.Controllers
 
         public async Task<IActionResult> PlaceDetails(int id, string category = null)
         {
-            var restaurant = await _placeService.GetRestaurantWithFoodsAsync(id);   
+            var restaurant = await _placeService.GetRestaurantWithFoodsAsync(id);
 
             if (restaurant == null)
             {
                 return NotFound();
             }
 
+            await _context.Entry(restaurant)
+                .Collection(r => r.Foods)
+                .Query()
+                .Include(f => f.FoodCategories)
+                .ThenInclude(fc => fc.Category)
+                .ToListAsync();
+
             if (!string.IsNullOrEmpty(category))
             {
-                restaurant.Foods = restaurant.Foods.Where(f => f.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
+                restaurant.Foods = restaurant.Foods
+                    .Where(f => f.FoodCategories != null && f.FoodCategories
+                        .Any(fc => fc.Category.CategoryName.Equals(category, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
             }
 
             var foodCategories = await _context.Foods
                 .Where(f => f.RestaurantId == id)
-                .Select(f => f.Category)
+                .SelectMany(f => f.FoodCategories)
+                .Select(fc => fc.Category.CategoryName)
                 .Distinct()
                 .ToListAsync();
 
@@ -42,6 +53,7 @@ namespace FoodEx.Controllers
 
             return View("PlaceDetails", restaurant);
         }
+
 
         public async Task<IActionResult> FoodDetails(int id)
         {
@@ -68,8 +80,9 @@ namespace FoodEx.Controllers
             if (!string.IsNullOrEmpty(category))
             {
                 restaurants = await _context.Restaurants
-                .Where(r => r.Foods
-                    .Any(f => f.Category.ToLower() == category.ToLower()))  
+                    .Where(r => r.Foods
+                    .Any(f => f.FoodCategories
+                    .Any(fc => fc.Category.CategoryName.ToLower() == category.ToLower())))
                 .ToListAsync();
             }
             else
@@ -77,8 +90,8 @@ namespace FoodEx.Controllers
                 restaurants = await _placeService.GetRestaurantsAsync(null);
             }
 
-            var foodCategories = await _context.Foods
-            .Select(f => f.Category)
+            var foodCategories = await _context.Categories
+            .Select(Category => Category.CategoryName)
             .Distinct()
             .ToListAsync();
 

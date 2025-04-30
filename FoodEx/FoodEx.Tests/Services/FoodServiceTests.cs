@@ -39,7 +39,7 @@ namespace FoodEx.Tests.Services
         public async Task GetFoodDetailsAsync_ReturnsCorrectDetails()
         {
             var restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" };
-            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, Category = "Main", ImageUrl = "test.jpg", Restaurant = restaurant };
+            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, ImageUrl = "test.jpg", Restaurant = restaurant };
             var rating = new Rating { FoodId = 1, UserId = "user1", RatingValue = 5, Comment = "Excellent!" };
 
             await _context.Foods.AddAsync(food);
@@ -57,7 +57,7 @@ namespace FoodEx.Tests.Services
         [Test]
         public async Task AddToCartAsync_AddsItemToCart()
         {
-            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, Category = "Main", ImageUrl = "test.jpg", Restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" } };
+            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, ImageUrl = "test.jpg", Restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" } };
             await _context.Foods.AddAsync(food);
             await _context.SaveChangesAsync();
 
@@ -75,7 +75,7 @@ namespace FoodEx.Tests.Services
         [Test]
         public async Task SubmitRatingAsync_AddsNewRating()
         {
-            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, Category = "Main", ImageUrl = "test.jpg", Restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" } };
+            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, ImageUrl = "test.jpg", Restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" } };
             await _context.Foods.AddAsync(food);
             await _context.SaveChangesAsync();
 
@@ -93,7 +93,7 @@ namespace FoodEx.Tests.Services
         [Test]
         public async Task SubmitRatingAsync_UpdatesExistingRating()
         {
-            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, Category = "Main", ImageUrl = "test.jpg", Restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" } };
+            var food = new Food { FoodId = 1, Name = "Pizza", Description = "Tasty", Price = 12.99m, ImageUrl = "test.jpg", Restaurant = new Restaurant { Name = "Test Restaurant", Location = "Test Location", Phone = "123456789", OwnerUserId = "owner-id" } };
             var rating = new Rating { FoodId = 1, UserId = "user1", RatingValue = 4, Comment = "Good" };
 
             await _context.Foods.AddAsync(food);

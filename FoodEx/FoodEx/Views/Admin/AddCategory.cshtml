@@ -1,0 +1,27 @@
+﻿@model FoodEx.Data.Entity.Category
+
+@{
+    ViewData["Title"] = "Add New Category";
+}
+
+<div class="container my-5">
+    <div class="card shadow-lg p-4 rounded-4">
+        <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+        <form asp-action="AddCategory" method="post">
+            <div class="mb-3">
+                <label asp-for="CategoryName" class="form-label">Category Name</label>
+                <input asp-for="CategoryName" class="form-control" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">Add Category</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

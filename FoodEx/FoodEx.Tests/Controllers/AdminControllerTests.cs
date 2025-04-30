@@ -87,7 +87,7 @@ namespace FoodEx.Tests.Controllers
             var food = new Food
             {
                 Name = "Pizza",
-                Category = "Italian",
+                //Category = "Italian",
                 Description = "Delicious pizza",
                 Price = 12.5m,
                 ImageUrl = "pizza.jpg",

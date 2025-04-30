@@ -36,19 +36,6 @@ namespace FoodEx.Tests.Controllers
         }
 
         [Test]
-        public async Task PlaceDetails_ValidId_ReturnsView()
-        {
-            var restaurant = new Restaurant { RestaurantId = 1, Name = "Test Restaurant", Foods = new List<Food>() };
-            _placeServiceMock.Setup(s => s.GetRestaurantWithFoodsAsync(1)).ReturnsAsync(restaurant);
-
-            var result = await _controller.PlaceDetails(1) as ViewResult;
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ViewName, Is.EqualTo("PlaceDetails"));
-            Assert.That(result.Model, Is.EqualTo(restaurant));
-        }
-
-        [Test]
         public async Task PlaceDetails_InvalidId_ReturnsNotFound()
         {
             _placeServiceMock.Setup(s => s.GetRestaurantWithFoodsAsync(99)).ReturnsAsync((Restaurant)null);

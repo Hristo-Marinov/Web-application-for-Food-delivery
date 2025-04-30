@@ -1,10 +1,11 @@
-﻿using FoodEx.Data.Entity;
-using FoodEx.Entity;
+﻿using FoodEx.Data.Context;
+using FoodEx.Data.Entity;
 using FoodEx.Services;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using FoodEx.Data.Context;
 
 namespace FoodEx.Tests.Services
 {
@@ -12,88 +13,135 @@ namespace FoodEx.Tests.Services
     public class RestaurantServiceTests
     {
         private ApplicationDbContext _context;
-        private RestaurantService _restaurantService;
+        private RestaurantService _service;
 
         [SetUp]
         public void Setup()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "RestaurantServiceTestDb")
+                .UseInMemoryDatabase(databaseName: $"TestDb_{System.Guid.NewGuid()}")
                 .Options;
-
             _context = new ApplicationDbContext(options);
-            _restaurantService = new RestaurantService(_context);
+            _service = new RestaurantService(_context);
         }
 
-        [TearDown]
-        public void TearDown()
+        [Test]
+        public async Task CreateRestaurantAsync_AddsRestaurant()
         {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
+            var restaurant = new Restaurant { Name = "Test Resto", Location = "Test Location", Phone = "123", OwnerUserId = "user1" };
+            var result = await _service.CreateRestaurantAsync(restaurant);
+            await _context.Entry(restaurant).ReloadAsync();
+            Assert.IsTrue(result);
+            Assert.That(await _context.Restaurants.CountAsync(), Is.EqualTo(1));
         }
 
         [Test]
         public async Task GetRestaurantByOwnerIdAsync_ReturnsCorrectRestaurant()
         {
-            var restaurant = new Restaurant { Name = "Italian Place", Location = "City Center", Phone = "123456", OwnerUserId = "owner1" };
+            var restaurant = new Restaurant { Name = "Test Resto", Location = "Loc", Phone = "123", OwnerUserId = "user2" };
             await _context.Restaurants.AddAsync(restaurant);
             await _context.SaveChangesAsync();
 
-            var result = await _restaurantService.GetRestaurantByOwnerIdAsync("owner1");
+            _context.Entry(restaurant).State = EntityState.Detached;
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Italian Place", result.Name);
+            var result = await _service.GetRestaurantByOwnerIdAsync("user2");
+            Assert.That(result?.Name, Is.EqualTo("Test Resto"));
         }
 
         [Test]
-        public async Task CreateRestaurantAsync_CreatesRestaurant()
+        public async Task GetRestaurantByOwnerIdAsync_ReturnsNullIfNotFound()
         {
-            var restaurant = new Restaurant { Name = "New Spot", Location = "Downtown", Phone = "654321", OwnerUserId = "owner2" };
+            var result = await _service.GetRestaurantByOwnerIdAsync("missing");
+            Assert.IsNull(result);
+        }
 
-            var result = await _restaurantService.CreateRestaurantAsync(restaurant);
+        [Test]
+        public async Task AddFoodAsync_AddsFoodWithNewCategory()
+        {
+            var restaurant = new Restaurant { Name = "R", Location = "L", Phone = "P", OwnerUserId = "user3" };
+            await _context.Restaurants.AddAsync(restaurant);
+            await _context.SaveChangesAsync();
+
+            var food = new Food { Name = "Pizza", Price = 10.0m, Description = "Desc", ImageUrl = "url" };
+            var result = await _service.AddFoodAsync("user3", food, new List<string> { "Italian" });
+
+            await _context.Entry(food).ReloadAsync();
 
             Assert.IsTrue(result);
-            Assert.AreEqual(1, await _context.Restaurants.CountAsync());
+            Assert.That(await _context.Foods.CountAsync(), Is.EqualTo(1));
+            Assert.That(await _context.Categories.CountAsync(), Is.EqualTo(1));
         }
 
         [Test]
-        public async Task AddFoodAsync_AddsFoodToRestaurant()
+        public async Task AddFoodAsync_ReturnsFalseIfRestaurantNotFound()
         {
-            var restaurant = new Restaurant { Name = "Food Court", Location = "Midtown", Phone = "112233", OwnerUserId = "owner3" };
+            var food = new Food { Name = "Burger", Description = "D", ImageUrl = "U" };
+            var result = await _service.AddFoodAsync("missing", food, new List<string> { "FastFood" });
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task AddFoodAsync_UsesExistingCategory()
+        {
+            var category = new Category { CategoryName = "Shared" };
+            await _context.Categories.AddAsync(category);
+            var restaurant = new Restaurant { Name = "R", Location = "L", Phone = "P", OwnerUserId = "user4" };
             await _context.Restaurants.AddAsync(restaurant);
             await _context.SaveChangesAsync();
 
-            var food = new Food { Name = "Burger", Description = "Tasty Burger", Price = 10, Category = "FastFood", ImageUrl = "burger.jpg" };
-
-            var result = await _restaurantService.AddFoodAsync("owner3", food);
+            var food = new Food { Name = "Taco", Description = "D", ImageUrl = "U" };
+            var result = await _service.AddFoodAsync("user4", food, new List<string> { "Shared" });
 
             Assert.IsTrue(result);
-            Assert.AreEqual(1, await _context.Foods.CountAsync());
+            Assert.That(await _context.Categories.CountAsync(), Is.EqualTo(1));
         }
 
         [Test]
-        public async Task DeleteFoodAsync_DeletesFood()
+        public async Task DeleteFoodAsync_RemovesFood()
         {
-            var restaurant = new Restaurant { Name = "BBQ Grill", Location = "South Side", Phone = "445566", OwnerUserId = "owner4" };
-            await _context.Restaurants.AddAsync(restaurant);
-            await _context.SaveChangesAsync();
-
-            var food = new Food { Name = "Steak", Description = "Juicy Steak", Price = 25, Category = "Meat", ImageUrl = "steak.jpg", RestaurantId = restaurant.RestaurantId };
+            var food = new Food { Name = "ToDelete", Description = "D", ImageUrl = "U" };
             await _context.Foods.AddAsync(food);
             await _context.SaveChangesAsync();
 
-            var result = await _restaurantService.DeleteFoodAsync(food.FoodId);
-
+            var result = await _service.DeleteFoodAsync(food.FoodId);
             Assert.IsTrue(result);
-            Assert.AreEqual(0, await _context.Foods.CountAsync());
+            Assert.That(await _context.Foods.CountAsync(), Is.EqualTo(0));
         }
 
         [Test]
-        public async Task DeleteFoodAsync_ReturnsFalse_WhenFoodNotFound()
+        public async Task DeleteFoodAsync_ReturnsFalseIfNotFound()
         {
-            var result = await _restaurantService.DeleteFoodAsync(999);
-
+            var result = await _service.DeleteFoodAsync(999);
             Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task AddFoodAsync_AssignsFoodToCorrectRestaurant()
+        {
+            var restaurant = new Restaurant { Name = "R", Location = "L", Phone = "P", OwnerUserId = "user5" };
+            await _context.Restaurants.AddAsync(restaurant);
+            await _context.SaveChangesAsync();
+
+            var food = new Food { Name = "Soup", Description = "D", ImageUrl = "U" };
+            await _service.AddFoodAsync("user5", food, new List<string> { "Warm" });
+
+            var addedFood = await _context.Foods.FirstOrDefaultAsync();
+            Assert.That(addedFood.RestaurantId, Is.EqualTo(restaurant.RestaurantId));
+        }
+
+        [Test]
+        public async Task AddFoodAsync_CreatesCorrectFoodCategoryRelations()
+        {
+            var restaurant = new Restaurant { Name = "R", Location = "L", Phone = "P", OwnerUserId = "user6" };
+            await _context.Restaurants.AddAsync(restaurant);
+            await _context.SaveChangesAsync();
+
+            var food = new Food { Name = "Steak", Description = "D", ImageUrl = "U" };
+            await _service.AddFoodAsync("user6", food, new List<string> { "Meat", "Dinner" });
+
+            var foodEntity = await _context.Foods.Include(f => f.FoodCategories).FirstOrDefaultAsync();
+            await _context.Entry(foodEntity).Collection(f => f.FoodCategories).LoadAsync();
+            Assert.That(foodEntity?.FoodCategories.Count, Is.EqualTo(2));
         }
     }
 }

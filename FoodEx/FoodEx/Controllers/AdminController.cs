@@ -1,5 +1,6 @@
 ﻿using FoodEx.Data;
 using FoodEx.Data.Context;
+using FoodEx.Data.Entity;
 using FoodEx.Entity;
 using FoodEx.Models;
 using FoodEx.Services;
@@ -109,6 +110,26 @@ namespace FoodEx.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("AdminPanel");
+        }
+
+        public IActionResult AddCategory()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategory(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Categories.Add(category);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Category added successfully!";
+                return RedirectToAction("AdminPanel"); 
+            }
+
+            return View(category);
         }
     }
 }
