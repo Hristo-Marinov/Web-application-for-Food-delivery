@@ -5,32 +5,46 @@
 }
 
 <div class="container mt-4">
-    <h2 class="mb-4">Find Your Favorite Restaurant</h2>
+    <!-- Title Section -->
 
-    <form method="get" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="searchTerm" class="form-control" placeholder="Search restaurants by name..." value="@ViewBag.SearchTerm">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
-        </div>
-    </form>
+    <!-- Filters Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="filter-section bg-light p-4 rounded shadow-sm">
+                <!-- Search Form -->
+                <form method="get" class="mb-4">
+                    <h2 class="mb-4 text-center">Find Your Favorite Restaurant</h2>
+                    <div class="input-group">
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Search restaurants by name..." value="@ViewBag.SearchTerm">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </div>
+                </form>
 
-    <div class="row mb-4">
-        <h2 for="category" class="form-label">Filter by Category</h2>
-        <div class="col-12 text-center">
-            <form asp-action="Place" method="get">
-                <div class="d-flex justify-content-center mt-4">
-                    <select name="category" id="category" class="form-select">
-                        <option value="">Select a Category</option>
-                        @foreach (var category in ViewBag.FoodCategories)
-                        {
-                            <option value="@category">@category</option>
-                        }
-                    </select>
-                    <button type="submit" class="btn btn-primary mt-2">Filter</button>
+                <!-- Category Filter Form -->
+                <div class="row mb-4">
+                    <h3 class="form-label text-center">Filter by Category</h3>
+                    <div class="col-12 text-center">
+                        <form asp-action="Place" method="get">
+                            <div class="d-flex justify-content-center align-items-center mt-4">
+                                <!-- Select for category -->
+                                <select name="category" id="category" class="form-select form-control-lg border-0 shadow-sm rounded-pill">
+                                    <option value="">Select a Category</option>
+                                    @foreach (var category in ViewBag.FoodCategories)
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                </select>
+                                <!-- Filter button -->
+                                <button type="submit" class="btn btn-primary ms-3 rounded-pill px-4 py-2">Filter</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
+    </div>
 
+    <!-- Restaurant Cards Section -->
     <div class="row">
         @foreach (var restaurant in Model)
         {
@@ -39,9 +53,11 @@
                     <a asp-controller="Place" asp-action="PlaceDetails" asp-route-id="@restaurant.RestaurantId" class="text-decoration-none text-dark">
                         <div class="img-wrapper">
                             <img src="@restaurant.ImageURL"
-                                 alt="@restaurant.Name" class="img-fluid w-100" />
+                                 alt="@restaurant.Name"
+                                 class="img-fluid w-100"
+                                 onerror="this.src='/images/placeholder.jpg'" />
                         </div>
-                        <div class="overlay">
+                        <div class="overlay position-absolute w-100 h-100 d-flex justify-content-center align-items-center">
                             <h5 class="restaurant-name text-white">@restaurant.Name</h5>
                         </div>
                     </a>

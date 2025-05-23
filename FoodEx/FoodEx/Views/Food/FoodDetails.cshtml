@@ -27,10 +27,13 @@
 
         <p class="text-center px-3">@Model.Description</p>
 
+        <!-- Quantity and Add to Cart Button -->
         <form asp-controller="Food" asp-action="OrderNow" method="post" class="d-flex justify-content-center mt-4">
             <input type="hidden" name="id" value="@Model.FoodId" />
-            <input type="number" name="quantities" value="1" min="1" class="form-control" />
-            <button type="submit" class="btn btn-success btn-lg w-100">Add to Cart for @Model.Price лв</button>
+            <div class="d-flex w-100 align-items-center">
+                <input type="number" name="quantities" value="1" min="1" class="form-control w-25 me-3" id="quantityInput" />
+                <button type="submit" class="btn btn-success btn-lg w-75" id="addToCartBtn">Add to Cart for @Model.Price лв</button>
+            </div>
         </form>
 
         <hr class="my-4" />
@@ -52,6 +55,7 @@
                             </span>
                         </div>
                         <div>@comment.Comment</div>
+                        
                     </div>
                 }
             }
@@ -81,3 +85,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Update the total price when quantity changes
+    document.getElementById('quantityInput').addEventListener('input', function () {
+        var quantity = this.value;
+        var price = @Model.Price;
+        var totalPrice = price * quantity;
+        var totalPriceText = totalPrice.toFixed(2) + " лв";
+        document.getElementById('addToCartBtn').textContent = "Add to Cart for " + totalPriceText;
+    });
+</script>

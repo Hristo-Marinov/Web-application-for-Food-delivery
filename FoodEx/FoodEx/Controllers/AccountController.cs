@@ -175,5 +175,65 @@ namespace FoodEx.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var model = new ProfileViewModel
+            {
+                Email = user.Email
+            };
+            return View(model);
+        }
+
+        // POST: Edit User Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(ProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                user.Email = model.Email;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.RefreshSignInAsync(user);
+                    return RedirectToAction(nameof(Profile));
+                }
+            }
+            return View("Profile", model);
+        }
+
+        
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.RefreshSignInAsync(user);
+                    return RedirectToAction(nameof(Profile));
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
+        }
     }
 }

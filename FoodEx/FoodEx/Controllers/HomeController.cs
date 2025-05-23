@@ -28,5 +28,10 @@ namespace FoodEx.Controllers
             var restaurants = await _homeService.GetAllRestaurantsAsync();
             return View(restaurants);
         }
+
+        public async Task<IActionResult> Privacy()
+        {
+            return View("Privacy");
+        }
     }
 }

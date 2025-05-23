@@ -5,31 +5,36 @@
 }
 
 <div class="container mt-5">
-    <h2 class="text-center text-primary">@Model.Name</h2>
-    <p class="text-center text-muted">@Model.Location</p>
+    <!-- Restaurant Name and Location -->
+    <h2 class="text-center text-success">@Model.Name</h2>
+    <p class="text-center text-success">@Model.Location</p>
 
+
+    <!-- Category Filter Buttons -->
     <div class="row justify-content-center mb-4">
         <div class="col-md-6">
             <div class="btn-group w-100" role="group" aria-label="Category filter">
-                <button type="button" class="btn btn-outline-primary w-100" onclick="location.href='@Url.Action("PlaceDetails", new { id = Model.RestaurantId, category = "" })'">All</button>
+                <button type="button" class="btn btn-outline-success w-100" onclick="location.href='@Url.Action("PlaceDetails", new { id = Model.RestaurantId, category = "" })'">All</button>
                 @foreach (var category in ViewBag.FoodCategories)
                 {
-                    <button type="button" class="btn btn-outline-primary w-100" onclick="location.href='@Url.Action("PlaceDetails", new { id = Model.RestaurantId, category = category })'">@category</button>
+                    <button type="button" class="btn btn-outline-success w-100" onclick="location.href='@Url.Action("PlaceDetails", new { id = Model.RestaurantId, category = category })'">@category</button>
                 }
             </div>
         </div>
     </div>
 
+
+    <!-- Food Cards Section -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var food in Model.Foods)
         {
             <div class="col mb-4">
                 <div class="card h-100 shadow-lg rounded">
-                    <img src="@food.ImageUrl" class="card-img-top" alt="@food.Name" style="object-fit: cover; height: 250px; border-radius: 10px;">
+                    <img src="@food.ImageUrl" class="card-img-top" alt="@food.Name" style="object-fit: cover; height: 250px; border-radius: 10px;" onerror="this.src='/images/placeholder.jpg'">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <h5 class="card-title text-center text-success">@food.Name</h5>
                         <p class="card-text text-muted text-center">@food.Price лв</p>
-                        <a asp-controller="Food" asp-action="FoodDetails" asp-route-id="@food.FoodId" class="btn btn-outline-success btn-lg mt-3">View Details</a>
+                        <a asp-controller="Food" asp-action="FoodDetails" asp-route-id="@food.FoodId" class="btn btn-outline-success btn-lg mt-3 w-100">View Details</a>
                     </div>
                 </div>
             </div>

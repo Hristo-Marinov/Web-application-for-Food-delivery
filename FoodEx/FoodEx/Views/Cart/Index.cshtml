@@ -31,7 +31,6 @@
                             <tr class="align-middle border-bottom">
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        
                                         <div>
                                             <strong>@item.FoodName</strong>
                                         </div>
@@ -39,9 +38,9 @@
                                 </td>
                                 <td class="fw-bold">@item.Price лв</td>
                                 <td>@item.Quantity</td>
-                                <td class="fw-bold">@item.Total</td>
+                                <td class="fw-bold">@item.Total лв</td>
                                 <td>
-                                    <form asp-action="RemoveFromCart" asp-route-cartItemId="@item.CartItemId" method="post">
+                                    <form asp-action="RemoveFromCart" asp-route-cartItemId="@item.CartItemId" method="post" onsubmit="return confirmDelete()">
                                         <button class="btn btn-sm btn-outline-danger">Remove</button>
                                     </form>
                                 </td>
@@ -72,3 +71,9 @@
         </div>
     }
 </div>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to remove this item from your cart?");
+    }
+</script>

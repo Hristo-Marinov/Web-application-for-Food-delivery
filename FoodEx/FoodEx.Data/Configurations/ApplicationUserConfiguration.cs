@@ -73,6 +73,7 @@ namespace FoodEx.Data.Configurations
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "Burger123!"),
                 }
+                
             );
         }
     }

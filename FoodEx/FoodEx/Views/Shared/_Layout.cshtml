@@ -74,7 +74,9 @@
                         @if (isAuthenticated)
                         {
                             <li class="nav-item me-3 text-muted small">
-                                Hello, @User.Identity.Name
+                                <a href="@Url.Action("Profile", "Account")" class="text-muted text-decoration-none">
+                                    Hello, @User.Identity.Name;
+                                </a>
                             </li>
                             <li class="nav-item me-2">
                                 <a class="nav-link position-relative" asp-controller="Cart" asp-action="Index">
@@ -110,7 +112,7 @@
 
     <footer class="border-top footer text-muted mt-4 py-3">
         <div class="container text-center">
-            &copy; @DateTime.Now.Year - FoodEx
+            &copy; @DateTime.Now.Year - FoodEx |  <a href="@Url.Action("Privacy", "Home")" class="text-muted">Privacy Policy</a>
         </div>
     </footer>
 

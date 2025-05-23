@@ -1,0 +1,22 @@
+﻿@model FoodEx.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Profile</h2>
+
+    <form method="post" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+    </form>
+
+    <div class="mt-4">
+        <a href="@Url.Action("ChangePassword")" class="btn btn-outline-secondary w-100">Change Password</a>
+    </div>
+</div>

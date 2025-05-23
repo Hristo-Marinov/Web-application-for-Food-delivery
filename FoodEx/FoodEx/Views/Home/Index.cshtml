@@ -3,39 +3,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="hero-section text-center text-white d-flex align-items-center justify-content-center" style="background-image: url('/images/hero.jpg'); height: 500px; background-size: cover; background-position: center;">
+<!-- Hero Section -->
+<section class="hero-section text-center text-white d-flex align-items-center justify-content-center" style="background-image: url('/images/amirali-mirhashemian-sc5sTPMrVfk-unsplash.jpg'); height: 500px; background-size: cover; background-position: center;">
     <div>
-        <h1 class="display-4">Welcome To</h1>
+        <h1 class="display-4">Welcome to</h1>
         <h2 class="display-2 fw-bold">FoodEx</h2>
-        <p class="lead">Venue of the Best Food</p>
-        <a class="btn btn-warning mt-3" href="/Places/Place">View Menu</a>
+        <p class="lead">Where Culinary Excellence Meets Unmatched Quality</p>
+        <a class="btn btn-warning mt-3" href="/Places/Place">Explore Our Menu</a>
     </div>
 </section>
 
+<!-- Features Section -->
 <section class="features py-5 bg-light text-center">
     <div class="container">
         <div class="row">
+            <!-- Feature 1 -->
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5><i class="bi bi-moon-stars"></i> Magical <span class="text-warning">Atmosphere</span></h5>
-                        <p>Wonderful serenity has taken possession of my entire soul, like these sweet mornings.</p>
+                        <h5><i class="bi bi-moon-stars"></i> Enchanting <span class="text-warning">Atmosphere</span></h5>
+                        <p>Immerse yourself in an environment designed to elevate your dining experience, where every moment feels like magic.</p>
                     </div>
                 </div>
             </div>
+            <!-- Feature 2 -->
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5><i class="bi bi-star"></i> Best Food <span class="text-warning">Quality</span></h5>
-                        <p>Wonderful serenity has taken possession of my entire soul, like these sweet mornings.</p>
+                        <h5><i class="bi bi-star"></i> Premium <span class="text-warning">Food Quality</span></h5>
+                        <p>Indulge in a selection of dishes crafted with the finest ingredients, prepared to perfection.</p>
                     </div>
                 </div>
             </div>
+            <!-- Feature 3 -->
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5><i class="bi bi-cash-coin"></i> Low Costing <span class="text-warning">Food</span></h5>
-                        <p>Wonderful serenity has taken possession of my entire soul, like these sweet mornings.</p>
+                        <h5><i class="bi bi-cash-coin"></i> Affordable <span class="text-warning">Dining</span></h5>
+                        <p>Experience top-tier culinary offerings at prices that are as pleasing as the dishes themselves.</p>
                     </div>
                 </div>
             </div>
@@ -43,23 +48,35 @@
     </div>
 </section>
 
+<!-- Story Section -->
 <section class="story-section py-5">
     <div class="container">
         <div class="text-center mb-5">
             <h2>Discover <span class="text-warning">Our Story</span></h2>
         </div>
         <div class="row align-items-center">
+            <!-- Text and Statistics -->
             <div class="col-md-6">
-                <p>When the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream.</p>
+                <p>At FoodEx, we strive to deliver more than just meals — we offer an unforgettable experience. With every bite, you’ll discover the passion and dedication that goes into crafting our dishes. Our commitment to quality, service, and atmosphere ensures that every visit is memorable.</p>
                 <div class="d-flex justify-content-between mt-4">
-                    <div><h4 class="text-warning">@ViewBag.DeliveryGuyCount</h4><p>Delivery Guy</p></div>
-                    <div><h4 class="text-warning">@ViewBag.FoodCount</h4><p>Food Items</p></div>
-                    <div><h4 class="text-warning">@ViewBag.RestaurantCount</h4><p>Restaurants</p></div>
+                    <div>
+                        <h4 class="text-warning">@ViewBag.DeliveryGuyCount</h4>
+                        <p>Dedicated Delivery Experts</p>
+                    </div>
+                    <div>
+                        <h4 class="text-warning">@ViewBag.FoodCount</h4>
+                        <p>Delicious Food Options</p>
+                    </div>
+                    <div>
+                        <h4 class="text-warning">@ViewBag.RestaurantCount</h4>
+                        <p>Exquisite Restaurants</p>
+                    </div>
                 </div>
             </div>
+            <!-- Images -->
             <div class="col-md-6 text-center">
-                <img src="/images/story-food1.jpg" class="img-fluid rounded shadow mb-3" style="width: 80%;">
-                <img src="/images/story-food2.jpg" class="img-fluid rounded shadow" style="width: 80%;">
+                <img src="/images/ivan-torres-MQUqbmszGGM-unsplash.jpg" class="img-fluid rounded shadow mb-3" style="width: 80%;" alt="Story Image 1">
+                <img src="/images/jakub-dziubak-iOHJKJqO6E0-unsplash.jpg" class="img-fluid rounded shadow" style="width: 80%;" alt="Story Image 2">
             </div>
         </div>
     </div>
