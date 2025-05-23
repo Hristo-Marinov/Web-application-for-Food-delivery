@@ -80,8 +80,17 @@ namespace FoodEx.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return NotFound();
 
-            user.LockoutEnabled = !user.LockoutEnabled;
-            await _userManager.UpdateAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (roles.Contains("DeliveryGuy") || roles.Contains("Restaurant"))
+            {
+                user.LockoutEnabled = !user.LockoutEnabled;
+                await _userManager.UpdateAsync(user);
+            }
+            else
+            {
+                return Forbid();
+            }
 
             return RedirectToAction("AdminPanel");
         }
@@ -123,7 +132,7 @@ namespace FoodEx.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Categories.Add(category);
+                _context.Categories.Add(category); 
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Category added successfully!";
                 return RedirectToAction("AdminPanel"); 
